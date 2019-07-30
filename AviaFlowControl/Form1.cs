@@ -93,26 +93,13 @@ namespace AviaFlowControl
         
         private void WizardPageScanImei_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
-            //bool b = false;
-            //if (textBoxIMEI.CanFocus)
-            //{
-            //    b = textBoxIMEI.Focus();
-            //    Program.logIt($"focus: return {b}");
-            //}
-            //if (textBoxIMEI.CanSelect)
-            //{
-            //    textBoxIMEI.Select();
-            //    Program.logIt($"select: return");
-            //}
+
         }        
 
         private void WizardPageScanImei_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
+            e.Cancel = true;
             Program.logIt($"IMEI: {textBoxIMEI.Text}");
-        }
-
-        private void TextBoxIMEI_TextChanged(object sender, EventArgs e)
-        {
 
         }
 
@@ -127,11 +114,6 @@ namespace AviaFlowControl
             string s = textBoxIMEI.Text;
             if (!string.IsNullOrEmpty(s))
                 textBoxIMEI.Text = "";
-            //if (textBoxIMEI.CanSelect)
-            //{
-            //    textBoxIMEI.Select();
-            //    Program.logIt($"select: return");
-            //}
         }
     }
 }

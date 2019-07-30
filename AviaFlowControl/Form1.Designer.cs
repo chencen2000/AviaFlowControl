@@ -165,7 +165,6 @@
             this.textBoxIMEI.Name = "textBoxIMEI";
             this.textBoxIMEI.Size = new System.Drawing.Size(462, 39);
             this.textBoxIMEI.TabIndex = 1;
-            this.textBoxIMEI.TextChanged += new System.EventHandler(this.TextBoxIMEI_TextChanged);
             // 
             // label1
             // 
