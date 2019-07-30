@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,7 +16,7 @@ namespace AviaFlowControl
         public Form1()
         {
             InitializeComponent();
-            pictureBox3.BringToFront();
+            //pictureBox3.BringToFront();
         }
 
         private void WizardPagePlaceDevice_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
@@ -53,7 +54,7 @@ namespace AviaFlowControl
         private void Form1_Load(object sender, EventArgs e)
         {
             //Bitmap b = new Bitmap(AviaFlowControl.Properties.Resources.AVIA_RGB_web);
-            pictureBox3.Paint += PictureBox3_Paint;
+            //pictureBox3.Paint += PictureBox3_Paint;
             wizardControl1.Paint += WizardControl1_Paint;
             Task.Run(() => 
             {
@@ -98,22 +99,89 @@ namespace AviaFlowControl
 
         private void WizardPageScanImei_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
-            e.Cancel = true;
-            Program.logIt($"IMEI: {textBoxIMEI.Text}");
-
+            if (!labelIMEIWaiting.Visible)
+            {
+                e.Cancel = true;
+                // select all IMEI for user to modify
+                {
+                    textBoxIMEI.SelectAll();
+                    textBoxIMEI.Focus();
+                }
+                //Program.logIt($"IMEI: {textBoxIMEI.Text}");
+                var tokenSource = new CancellationTokenSource();
+                wizardPageScanImei.Tag = tokenSource;
+                //Task.Run(() =>
+                Task.Factory.StartNew((o) =>
+                {
+                    CancellationToken ct = (CancellationToken)o;
+                    int delay = 3;
+                    while (delay-- > 0)
+                    {
+                        this.Invoke(new Action(() =>
+                        {
+                            labelIMEIWaiting.Visible = true;
+                            this.labelIMEIWaiting.Text = $"Enter {textBoxIMEI.Text}, wait for {delay} seconds to continue...";
+                        }));
+                        System.Threading.Thread.Sleep(1000);
+                        if (ct.IsCancellationRequested)
+                        {
+                            break;
+                        }
+                    }
+                    if (!ct.IsCancellationRequested)
+                    {
+                        wizardControl1.Invoke(new Action(() =>
+                        {
+                            wizardPageScanImei.Tag = null;
+                            wizardControl1.NextPage();
+                        }));
+                    }
+                    else
+                    {
+                        // cancelled
+                        this.Invoke(new Action(() => 
+                        {
+                            //textBoxIMEI.SelectAll();
+                            textBoxIMEI.Focus();
+                            labelIMEIWaiting.Visible = false;
+                            wizardPageScanImei.Tag = null;
+                        }));
+                    }
+                }, tokenSource.Token);
+            }
         }
 
-        private void WizardPageScanImei_Enter(object sender, EventArgs e)
+        void WizardPageScanImei_init()
         {
-            bool b = false;
             if (textBoxIMEI.CanFocus)
             {
-                b = textBoxIMEI.Focus();
-                Program.logIt($"focus: return {b}");
+                textBoxIMEI.Focus();
             }
-            string s = textBoxIMEI.Text;
-            if (!string.IsNullOrEmpty(s))
-                textBoxIMEI.Text = "";
+            textBoxIMEI.Text = "";
+            wizardPageScanImei.Tag = null;
+            labelIMEIWaiting.Visible = false;
+        }
+        private void WizardPageScanImei_Enter(object sender, EventArgs e)
+        {
+            WizardPageScanImei_init();
+        }
+
+        private void TextBoxIMEI_TextChanged(object sender, EventArgs e)
+        {
+            if (labelIMEIWaiting.Visible)
+            {
+                // waiting message already displayed, this is re-enter the IMEI
+                // we need reset the timer and wait for 3 seconds again.
+                if (wizardPageScanImei.Tag != null)
+                {
+                    CancellationTokenSource cts = (CancellationTokenSource)wizardPageScanImei.Tag;
+                    cts.Cancel();                    
+                }
+            }
+            else
+            {
+                // normal imei entered
+            }
         }
     }
 }
