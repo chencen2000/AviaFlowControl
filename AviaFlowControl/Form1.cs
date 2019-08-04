@@ -46,9 +46,7 @@ namespace AviaFlowControl
 
         private void WizardPageLogin_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
-            Bitmap b = new Bitmap(AviaFlowControl.Properties.Resources._980478);
-            b.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            pictureBox2.Image = b;
+
         }
 
         private void Form1_Load(object sender, EventArgs e)

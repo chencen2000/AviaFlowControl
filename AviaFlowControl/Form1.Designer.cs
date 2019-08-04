@@ -71,7 +71,7 @@
             this.wizardControl1.Pages.Add(this.wizardPagePlaceDevice);
             this.wizardControl1.Pages.Add(this.wizardPageInProcess);
             this.wizardControl1.Pages.Add(this.wizardPageResult);
-            this.wizardControl1.Size = new System.Drawing.Size(625, 446);
+            this.wizardControl1.Size = new System.Drawing.Size(709, 431);
             this.wizardControl1.TabIndex = 0;
             this.wizardControl1.Title = "AVIA Grading System";
             // 
@@ -83,7 +83,7 @@
             this.wizardPageLogin.Controls.Add(this.label2);
             this.wizardPageLogin.Controls.Add(this.Username);
             this.wizardPageLogin.Name = "wizardPageLogin";
-            this.wizardPageLogin.Size = new System.Drawing.Size(578, 290);
+            this.wizardPageLogin.Size = new System.Drawing.Size(662, 277);
             this.wizardPageLogin.TabIndex = 0;
             this.wizardPageLogin.Text = "Login";
             this.wizardPageLogin.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageLogin_Initialize);
@@ -92,24 +92,25 @@
             // 
             this.pictureBox2.BackColor = System.Drawing.SystemColors.Info;
             this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Left;
             this.pictureBox2.InitialImage = null;
             this.pictureBox2.Location = new System.Drawing.Point(0, 0);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(135, 292);
+            this.pictureBox2.Size = new System.Drawing.Size(135, 277);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 4;
             this.pictureBox2.TabStop = false;
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(254, 127);
+            this.textBox2.Location = new System.Drawing.Point(254, 117);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(287, 23);
             this.textBox2.TabIndex = 3;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(254, 86);
+            this.textBox1.Location = new System.Drawing.Point(254, 79);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(287, 23);
             this.textBox1.TabIndex = 2;
@@ -117,18 +118,18 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(163, 127);
+            this.label2.Location = new System.Drawing.Point(163, 117);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 17);
+            this.label2.Size = new System.Drawing.Size(57, 15);
             this.label2.TabIndex = 1;
             this.label2.Text = "Password";
             // 
             // Username
             // 
             this.Username.AutoSize = true;
-            this.Username.Location = new System.Drawing.Point(163, 86);
+            this.Username.Location = new System.Drawing.Point(163, 79);
             this.Username.Name = "Username";
-            this.Username.Size = new System.Drawing.Size(67, 17);
+            this.Username.Size = new System.Drawing.Size(60, 15);
             this.Username.TabIndex = 0;
             this.Username.Text = "Username";
             // 
@@ -139,7 +140,7 @@
             this.wizardPageScanImei.Controls.Add(this.textBoxIMEI);
             this.wizardPageScanImei.Controls.Add(this.label1);
             this.wizardPageScanImei.Name = "wizardPageScanImei";
-            this.wizardPageScanImei.Size = new System.Drawing.Size(578, 290);
+            this.wizardPageScanImei.Size = new System.Drawing.Size(662, 281);
             this.wizardPageScanImei.TabIndex = 1;
             this.wizardPageScanImei.Text = "Scan IMEI";
             this.wizardPageScanImei.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPageScanImei_Commit);
@@ -149,16 +150,16 @@
             // labelIMEIWaiting
             // 
             this.labelIMEIWaiting.AutoSize = true;
-            this.labelIMEIWaiting.Location = new System.Drawing.Point(50, 156);
+            this.labelIMEIWaiting.Location = new System.Drawing.Point(50, 144);
             this.labelIMEIWaiting.Name = "labelIMEIWaiting";
-            this.labelIMEIWaiting.Size = new System.Drawing.Size(298, 17);
+            this.labelIMEIWaiting.Size = new System.Drawing.Size(265, 15);
             this.labelIMEIWaiting.TabIndex = 2;
             this.labelIMEIWaiting.Text = "Enter 0123456789, wait for 3 seconds to continue.";
             // 
             // textBoxIMEI
             // 
             this.textBoxIMEI.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxIMEI.Location = new System.Drawing.Point(50, 73);
+            this.textBoxIMEI.Location = new System.Drawing.Point(50, 67);
             this.textBoxIMEI.Name = "textBoxIMEI";
             this.textBoxIMEI.Size = new System.Drawing.Size(462, 39);
             this.textBoxIMEI.TabIndex = 1;
@@ -167,9 +168,9 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(47, 31);
+            this.label1.Location = new System.Drawing.Point(47, 29);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(66, 17);
+            this.label1.Size = new System.Drawing.Size(58, 15);
             this.label1.TabIndex = 0;
             this.label1.Text = "Scan IMEI";
             // 
@@ -178,7 +179,7 @@
             this.wizardPagePlaceDevice.Controls.Add(this.label6);
             this.wizardPagePlaceDevice.Controls.Add(this.pictureBox1);
             this.wizardPagePlaceDevice.Name = "wizardPagePlaceDevice";
-            this.wizardPagePlaceDevice.Size = new System.Drawing.Size(578, 292);
+            this.wizardPagePlaceDevice.Size = new System.Drawing.Size(662, 281);
             this.wizardPagePlaceDevice.TabIndex = 2;
             this.wizardPagePlaceDevice.Text = "Place the Device on Tray";
             this.wizardPagePlaceDevice.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPagePlaceDevice_Initialize);
@@ -187,7 +188,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(3, 260);
+            this.label6.Location = new System.Drawing.Point(3, 219);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(475, 32);
             this.label6.TabIndex = 1;
@@ -195,9 +196,9 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(58, 21);
+            this.pictureBox1.Location = new System.Drawing.Point(58, 19);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(439, 188);
+            this.pictureBox1.Size = new System.Drawing.Size(439, 174);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
@@ -207,7 +208,7 @@
             this.wizardPageInProcess.Controls.Add(this.label3);
             this.wizardPageInProcess.Controls.Add(this.progressBar1);
             this.wizardPageInProcess.Name = "wizardPageInProcess";
-            this.wizardPageInProcess.Size = new System.Drawing.Size(578, 292);
+            this.wizardPageInProcess.Size = new System.Drawing.Size(578, 270);
             this.wizardPageInProcess.TabIndex = 3;
             this.wizardPageInProcess.Text = "In Progress ...";
             this.wizardPageInProcess.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageInProcess_Initialize);
@@ -215,17 +216,17 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(190, 55);
+            this.label3.Location = new System.Drawing.Point(190, 51);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(106, 17);
+            this.label3.Size = new System.Drawing.Size(93, 15);
             this.label3.TabIndex = 1;
             this.label3.Text = "Scan in progress";
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(62, 88);
+            this.progressBar1.Location = new System.Drawing.Point(62, 81);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(445, 23);
+            this.progressBar1.Size = new System.Drawing.Size(445, 21);
             this.progressBar1.TabIndex = 0;
             // 
             // wizardPageResult
@@ -235,7 +236,7 @@
             this.wizardPageResult.Controls.Add(this.label4);
             this.wizardPageResult.Name = "wizardPageResult";
             this.wizardPageResult.NextPage = this.wizardPageScanImei;
-            this.wizardPageResult.Size = new System.Drawing.Size(578, 290);
+            this.wizardPageResult.Size = new System.Drawing.Size(662, 277);
             this.wizardPageResult.TabIndex = 4;
             this.wizardPageResult.Text = "Grade Result";
             // 
@@ -243,27 +244,27 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(3, 262);
+            this.label5.Location = new System.Drawing.Point(3, 226);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(445, 30);
+            this.label5.Size = new System.Drawing.Size(446, 30);
             this.label5.TabIndex = 1;
             this.label5.Text = "Remove the device and Click Next to continue.";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft YaHei UI", 144F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 144F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(154, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(240, 249);
+            this.label4.Size = new System.Drawing.Size(220, 217);
             this.label4.TabIndex = 0;
             this.label4.Text = "A";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(625, 446);
+            this.ClientSize = new System.Drawing.Size(709, 431);
             this.Controls.Add(this.wizardControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "Form1";

@@ -105,7 +105,7 @@
     <Content Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\projects\local\AeroWizard-master\src\Library\AeroWizard.csproj">
+    <ProjectReference Include="..\AeroWizard-master\src\Library\AeroWizard.csproj">
       <Project>{199c12c4-3eef-4d08-bac3-f2a62bcf969c}</Project>
       <Name>AeroWizard</Name>
     </ProjectReference>
