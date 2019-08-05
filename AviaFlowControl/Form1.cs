@@ -285,7 +285,7 @@ namespace AviaFlowControl
                     System.Threading.Thread.Sleep(450);
                     wizardControl1.Invoke(new Action(() =>
                     {
-                        progressBar1.Value = step++;
+                        progressBar1.Value = Math.Min(step++, progressBar1.Maximum);
                         progressBar1.Update();
                     }));
                     // check result
@@ -296,7 +296,7 @@ namespace AviaFlowControl
                         step = 100;
                         wizardControl1.Invoke(new Action(() =>
                         {
-                            progressBar1.Value = step++;
+                            progressBar1.Value = progressBar1.Maximum;
                             progressBar1.Update();
                         }));
                     }
