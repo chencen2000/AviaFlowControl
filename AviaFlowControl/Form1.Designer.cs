@@ -31,8 +31,8 @@
             this.wizardControl1 = new AeroWizard.WizardControl();
             this.wizardPageLogin = new AeroWizard.WizardPage();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxPassword = new System.Windows.Forms.TextBox();
+            this.textBoxUsername = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.Username = new System.Windows.Forms.Label();
             this.wizardPageScanImei = new AeroWizard.WizardPage();
@@ -47,7 +47,7 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.wizardPageResult = new AeroWizard.WizardPage();
             this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.labelGrade = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.wizardControl1)).BeginInit();
             this.wizardPageLogin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -78,14 +78,15 @@
             // wizardPageLogin
             // 
             this.wizardPageLogin.Controls.Add(this.pictureBox2);
-            this.wizardPageLogin.Controls.Add(this.textBox2);
-            this.wizardPageLogin.Controls.Add(this.textBox1);
+            this.wizardPageLogin.Controls.Add(this.textBoxPassword);
+            this.wizardPageLogin.Controls.Add(this.textBoxUsername);
             this.wizardPageLogin.Controls.Add(this.label2);
             this.wizardPageLogin.Controls.Add(this.Username);
             this.wizardPageLogin.Name = "wizardPageLogin";
             this.wizardPageLogin.Size = new System.Drawing.Size(662, 277);
             this.wizardPageLogin.TabIndex = 0;
             this.wizardPageLogin.Text = "Login";
+            this.wizardPageLogin.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPageLogin_Commit);
             this.wizardPageLogin.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageLogin_Initialize);
             // 
             // pictureBox2
@@ -101,19 +102,20 @@
             this.pictureBox2.TabIndex = 4;
             this.pictureBox2.TabStop = false;
             // 
-            // textBox2
+            // textBoxPassword
             // 
-            this.textBox2.Location = new System.Drawing.Point(254, 117);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(287, 23);
-            this.textBox2.TabIndex = 3;
+            this.textBoxPassword.Location = new System.Drawing.Point(254, 117);
+            this.textBoxPassword.Name = "textBoxPassword";
+            this.textBoxPassword.PasswordChar = '*';
+            this.textBoxPassword.Size = new System.Drawing.Size(287, 23);
+            this.textBoxPassword.TabIndex = 3;
             // 
-            // textBox1
+            // textBoxUsername
             // 
-            this.textBox1.Location = new System.Drawing.Point(254, 79);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(287, 23);
-            this.textBox1.TabIndex = 2;
+            this.textBoxUsername.Location = new System.Drawing.Point(254, 79);
+            this.textBoxUsername.Name = "textBoxUsername";
+            this.textBoxUsername.Size = new System.Drawing.Size(287, 23);
+            this.textBoxUsername.TabIndex = 2;
             // 
             // label2
             // 
@@ -208,7 +210,7 @@
             this.wizardPageInProcess.Controls.Add(this.label3);
             this.wizardPageInProcess.Controls.Add(this.progressBar1);
             this.wizardPageInProcess.Name = "wizardPageInProcess";
-            this.wizardPageInProcess.Size = new System.Drawing.Size(578, 270);
+            this.wizardPageInProcess.Size = new System.Drawing.Size(662, 277);
             this.wizardPageInProcess.TabIndex = 3;
             this.wizardPageInProcess.Text = "In Progress ...";
             this.wizardPageInProcess.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageInProcess_Initialize);
@@ -227,18 +229,20 @@
             this.progressBar1.Location = new System.Drawing.Point(62, 81);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(445, 21);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar1.TabIndex = 0;
             // 
             // wizardPageResult
             // 
             this.wizardPageResult.AllowBack = false;
             this.wizardPageResult.Controls.Add(this.label5);
-            this.wizardPageResult.Controls.Add(this.label4);
+            this.wizardPageResult.Controls.Add(this.labelGrade);
             this.wizardPageResult.Name = "wizardPageResult";
             this.wizardPageResult.NextPage = this.wizardPageScanImei;
             this.wizardPageResult.Size = new System.Drawing.Size(662, 277);
             this.wizardPageResult.TabIndex = 4;
             this.wizardPageResult.Text = "Grade Result";
+            this.wizardPageResult.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageResult_Initialize);
             // 
             // label5
             // 
@@ -250,15 +254,15 @@
             this.label5.TabIndex = 1;
             this.label5.Text = "Remove the device and Click Next to continue.";
             // 
-            // label4
+            // labelGrade
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 144F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(154, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(220, 217);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "A";
+            this.labelGrade.AutoSize = true;
+            this.labelGrade.Font = new System.Drawing.Font("Microsoft Sans Serif", 144F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelGrade.Location = new System.Drawing.Point(154, 0);
+            this.labelGrade.Name = "labelGrade";
+            this.labelGrade.Size = new System.Drawing.Size(220, 217);
+            this.labelGrade.TabIndex = 0;
+            this.labelGrade.Text = "A";
             // 
             // Form1
             // 
@@ -292,8 +296,8 @@
 
         private AeroWizard.WizardControl wizardControl1;
         private AeroWizard.WizardPage wizardPageLogin;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxPassword;
+        private System.Windows.Forms.TextBox textBoxUsername;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label Username;
         private AeroWizard.WizardPage wizardPageScanImei;
@@ -308,7 +312,7 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label labelGrade;
         private System.Windows.Forms.Label labelIMEIWaiting;
     }
 }
