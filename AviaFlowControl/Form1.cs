@@ -337,7 +337,7 @@ namespace AviaFlowControl
                     else
                     {
                         string s = avia_device.GetString("device", "device", "");
-                        if (string.Compare(s, "gone", true) == 0)
+                        if (string.Compare(s, "removed", true) == 0)
                         {
                             done = true;
                         }
