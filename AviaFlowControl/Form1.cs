@@ -19,23 +19,41 @@ namespace AviaFlowControl
         public Form1()
         {
             InitializeComponent();
-            //pictureBox3.BringToFront();
+            
         }
-
+        #region form function
         private void Form1_Load(object sender, EventArgs e)
         {
             //Bitmap b = new Bitmap(AviaFlowControl.Properties.Resources.AVIA_RGB_web);
             //pictureBox3.Paint += PictureBox3_Paint;
-            wizardControl1.Paint += WizardControl1_Paint;
+            //wizardControl1.Paint += WizardControl1_Paint;
+            //Task.Run(() => 
+            //{
+            //    while (true)
+            //    {
+            //        System.Threading.Thread.Sleep(1000);
+            //        this.Invoke(new Action(() => { this.Invalidate(); }));
+            //    }
+            //});
             Task.Run(() => 
             {
-                while (true)
+                // connect to OE server
+                if(!OEControl.connect())
                 {
-                    System.Threading.Thread.Sleep(1000);
-                    this.Invoke(new Action(() => { this.Invalidate(); }));
+                    // fail to connect the OE server
+                    this.Invoke(new Action(() => 
+                    {
+                        MessageBox.Show("Fail to connect UI", "Error");
+                    }));
                 }
             });
         }
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            OEControl.stop();
+            OEControl.disconnect();
+        }
+        #endregion
 
         #region login page
         private void WizardPageLogin_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
@@ -89,6 +107,8 @@ namespace AviaFlowControl
                                         {
                                             wizardControl1.NextPage();
                                         }));
+                                        // OE Control start
+                                        OEControl.start();
                                     }
                                     catch (Exception) { }
                                 }
@@ -111,32 +131,6 @@ namespace AviaFlowControl
         }
 
         #endregion
-
-        private void WizardControl1_Paint(object sender, PaintEventArgs e)
-        {
-            Rectangle r = new Rectangle(new Point(0, 0), wizardControl1.ClientSize);
-            e.Graphics.FillRectangle(new System.Drawing.SolidBrush(System.Drawing.Color.Red), r);
-        }
-
-        private void PictureBox3_Paint(object sender, PaintEventArgs e)
-        {
-            //Bitmap b = new Bitmap(AviaFlowControl.Properties.Resources.AVIA_RGB_web);
-            //e.Graphics.DrawImage(b, new Point(0, 0));
-            e.Graphics.FillRectangle(new System.Drawing.SolidBrush(System.Drawing.Color.Red), new Rectangle(0, 0, 200, 300));
-        }
-
-        private void Form1_Paint(object sender, PaintEventArgs e)
-        {
-            Rectangle r = new Rectangle(new Point(0, 0), this.ClientSize);
-            e.Graphics.FillRectangle(new System.Drawing.SolidBrush(System.Drawing.Color.Red), r);
-        }
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            Rectangle r = new Rectangle(new Point(0, 0), this.ClientSize);
-            e.Graphics.FillRectangle(new System.Drawing.SolidBrush(System.Drawing.Color.Red), r);
-
-        }
 
         #region page IMEI input
         private void WizardPageScanImei_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
@@ -184,6 +178,8 @@ namespace AviaFlowControl
                             wizardPageScanImei.Tag = null;
                             wizardControl1.NextPage();
                         }));
+                        // oe control
+                        OEControl.load();
                     }
                     else
                     {
@@ -268,6 +264,8 @@ namespace AviaFlowControl
                 {
                     this.Invoke(new Action(() => wizardControl1.NextPage()));
                 }
+                // oe control
+                OEControl.scan();
             }, tokenSource.Token);
         }
         #endregion
@@ -282,16 +280,17 @@ namespace AviaFlowControl
                 utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
                 while (!done)
                 {
-                    System.Threading.Thread.Sleep(450);
+                    System.Threading.Thread.Sleep(300);
                     wizardControl1.Invoke(new Action(() =>
                     {
                         progressBar1.Value = Math.Min(step++, progressBar1.Maximum);
                         progressBar1.Update();
                     }));
                     // check result
-                    string grade = avia_device.GetString("device", "grade", "");
+                    string grade = avia_device.GetString("device", "grade", "");                    
                     if (!string.IsNullOrEmpty(grade))
                     {
+                        Program.logIt($"Result: {grade}");
                         done = true;
                         step = 100;
                         wizardControl1.Invoke(new Action(() =>
@@ -324,6 +323,8 @@ namespace AviaFlowControl
             Task t = Task.Factory.StartNew((o) =>
             {
                 CancellationToken ct = (CancellationToken)o;
+                // oe control
+                OEControl.unload();
                 utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
                 bool done = false;
                 while (!done)
@@ -348,8 +349,10 @@ namespace AviaFlowControl
                 {
                     this.Invoke(new Action(() => wizardControl1.NextPage()));
                 }
+
             }, tokenSource.Token);
         }
         #endregion
+
     }
 }
