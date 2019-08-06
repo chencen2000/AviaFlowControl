@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,6 +16,9 @@ namespace AviaFlowControl
 {
     public partial class Form1 : Form
     {
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
         CancellationTokenSource tokenSource = null;
         public Form1()
         {
@@ -128,7 +132,14 @@ namespace AviaFlowControl
         }
         private void WizardPageLogin_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
-
+            Task.Run(() => 
+            {
+                Process[] p = Process.GetProcessesByName("evaoi_3.1.0.0");
+                if (p.Length > 0)
+                {
+                    ShowWindow(p[0].MainWindowHandle, 2);
+                }
+            });
         }
         private void WizardPageLogin_Enter(object sender, EventArgs e)
         {
