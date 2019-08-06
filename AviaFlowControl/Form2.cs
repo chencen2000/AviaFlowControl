@@ -40,5 +40,10 @@ namespace AviaFlowControl
         {
             MessageBox.Show("OK");
         }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+            imeiInput1.Focus();
+        }
     }
 }

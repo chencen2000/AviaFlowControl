@@ -130,7 +130,10 @@ namespace AviaFlowControl
         {
 
         }
-
+        private void WizardPageLogin_Enter(object sender, EventArgs e)
+        {
+            textBoxUsername.Focus();
+        }
         #endregion
 
 
@@ -138,12 +141,16 @@ namespace AviaFlowControl
         private void WizardPagePlaceDevice_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             this.wizardPagePlaceDevice.Controls.Add(this.imeiInput1);
+            this.imeiInput1.clear();
+            this.imeiInput1.Focus();
             //pictureBox1.Image = Image.FromFile(@"C:\Tools\logs\Rotating_earth_(large).gif");
             Program.logIt("WizardPagePlaceDevice_Initialize: ");
             tokenSource = new CancellationTokenSource();
             // start task wait for device loaded
             Task t = Task.Factory.StartNew((o) => 
             {
+                // oe control
+                Task tt = Task.Run(() => OEControl.load());
                 CancellationToken ct = (CancellationToken)o;
                 utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
                 bool done = false;
@@ -169,9 +176,12 @@ namespace AviaFlowControl
                 {
                     this.Invoke(new Action(() => wizardControl1.NextPage()));
                 }
-                // oe control
-                OEControl.scan();
+                tt.Wait();
             }, tokenSource.Token);
+        }
+        private void WizardPagePlaceDevice_Enter(object sender, EventArgs e)
+        {
+            this.imeiInput1.Focus();
         }
         #endregion
 
@@ -179,8 +189,12 @@ namespace AviaFlowControl
         private void WizardPageInProcess_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             this.wizardPageInProcess.Controls.Add(this.imeiInput1);
+            this.imeiInput1.Focus();
+            labelStatus.Text = "Scan in progress";
+            this.wizardPageInProcess.Text = labelStatus.Text;
             Task t = Task.Run(() =>
             {
+                Task tt = Task.Run(() => OEControl.scan());
                 bool done = false;
                 int step = 0;
                 utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
@@ -193,15 +207,15 @@ namespace AviaFlowControl
                         progressBar1.Update();
                     }));
                     // check the progress
-                    string cmd = avia_device.GetString("device", "grade", "");
-                    if (string.Compare(cmd, "") == 0)
+                    string cmd = avia_device.GetString("query", "command", "");
+                    if (string.Compare(cmd, "PMP", true) == 0)
                     {
                         wizardControl1.Invoke(new Action(() =>
                         {
                             labelStatus.Text = "Inspection in progress";
+                            this.wizardPageInProcess.Text = labelStatus.Text;
                         }));
                     }
-
                     // check result
                     string grade = avia_device.GetString("device", "grade", "");                    
                     if (!string.IsNullOrEmpty(grade))
@@ -220,9 +234,14 @@ namespace AviaFlowControl
                 {
                     wizardControl1.NextPage();
                 }));
+                tt.Wait();
             });
         }
-#endregion
+        private void WizardPageInProcess_Enter(object sender, EventArgs e)
+        {
+            this.imeiInput1.Focus();
+        }
+        #endregion
 
         #region page unload device
         private void WizardPageResult_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
@@ -241,7 +260,8 @@ namespace AviaFlowControl
             {
                 CancellationToken ct = (CancellationToken)o;
                 // oe control
-                OEControl.unload();
+                Task tt = Task.Run(() => OEControl.unload());
+                //OEControl.unload();
                 utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
                 bool done = false;
                 while (!done)
@@ -269,7 +289,11 @@ namespace AviaFlowControl
 
             }, tokenSource.Token);
         }
-#endregion
+
+        #endregion
+
+
+
 
     }
 }

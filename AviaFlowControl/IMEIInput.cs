@@ -19,11 +19,22 @@ namespace AviaFlowControl
 
         private void TextBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == '\r')
+            if (e.KeyChar == '\r' || e.KeyChar=='\t')
             {
                 //textBox1.Text = textBox1.Text.Trim();
                 e.Handled = true;
+                textBox1.SelectAll();
             }
+        }
+
+        private void IMEIInput_Enter(object sender, EventArgs e)
+        {
+            textBox1.Focus();
+        }
+
+        public void clear()
+        {
+            textBox1.Text = "";
         }
     }
 }
