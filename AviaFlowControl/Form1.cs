@@ -76,6 +76,7 @@ namespace AviaFlowControl
                         {
                             System.Collections.Specialized.StringDictionary envs = new System.Collections.Specialized.StringDictionary();
                             envs.Add("APSTHOME", System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA"));
+                            //Tuple<int, string[]> res = Program.run_exe(@"c:\windows\system32\notepad.exe", param, envs);
                             Tuple<int, string[]> res = Program.run_exe(exe, param, envs);
                             if (res.Item1 == 0)
                             {
@@ -132,107 +133,11 @@ namespace AviaFlowControl
 
         #endregion
 
-        #region page IMEI input
-        private void WizardPageScanImei_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
-        {
-
-        }        
-
-        private void WizardPageScanImei_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
-        {
-            if (!labelIMEIWaiting.Visible)
-            {
-                e.Cancel = true;
-                // select all IMEI for user to modify
-                {
-                    textBoxIMEI.SelectAll();
-                    textBoxIMEI.Focus();
-                }
-                //Program.logIt($"IMEI: {textBoxIMEI.Text}");
-                var tokenSource = new CancellationTokenSource();
-                wizardPageScanImei.Tag = tokenSource;
-                //Task.Run(() =>
-                Task.Factory.StartNew((o) =>
-                {
-                    CancellationToken ct = (CancellationToken)o;
-                    int delay = 3;
-                    while (delay-- > 0)
-                    {
-                        this.Invoke(new Action(() =>
-                        {
-                            labelIMEIWaiting.Visible = true;
-                            this.labelIMEIWaiting.Text = $"Enter {textBoxIMEI.Text}, wait for {delay} seconds to continue...";
-                        }));
-                        System.Threading.Thread.Sleep(1000);
-                        if (ct.IsCancellationRequested)
-                        {
-                            break;
-                        }
-                    }
-                    if (!ct.IsCancellationRequested)
-                    {
-                        utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
-                        avia_device.WriteValue("device", "imei", this.textBoxIMEI.Text);
-                        wizardControl1.Invoke(new Action(() =>
-                        {
-                            wizardPageScanImei.Tag = null;
-                            wizardControl1.NextPage();
-                        }));
-                        // oe control
-                        OEControl.load();
-                    }
-                    else
-                    {
-                        // cancelled
-                        this.Invoke(new Action(() => 
-                        {
-                            //textBoxIMEI.SelectAll();
-                            textBoxIMEI.Focus();
-                            labelIMEIWaiting.Visible = false;
-                            wizardPageScanImei.Tag = null;
-                        }));
-                    }
-                }, tokenSource.Token);
-            }
-        }
-
-        void WizardPageScanImei_init()
-        {
-            if (textBoxIMEI.CanFocus)
-            {
-                textBoxIMEI.Focus();
-            }
-            textBoxIMEI.Text = "";
-            wizardPageScanImei.Tag = null;
-            labelIMEIWaiting.Visible = false;
-        }
-        private void WizardPageScanImei_Enter(object sender, EventArgs e)
-        {
-            WizardPageScanImei_init();
-        }
-
-        private void TextBoxIMEI_TextChanged(object sender, EventArgs e)
-        {
-            if (labelIMEIWaiting.Visible)
-            {
-                // waiting message already displayed, this is re-enter the IMEI
-                // we need reset the timer and wait for 3 seconds again.
-                if (wizardPageScanImei.Tag != null)
-                {
-                    CancellationTokenSource cts = (CancellationTokenSource)wizardPageScanImei.Tag;
-                    cts.Cancel();                    
-                }
-            }
-            else
-            {
-                // normal imei entered
-            }
-        }
-        #endregion
 
         #region page load device
         private void WizardPagePlaceDevice_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
+            this.wizardPagePlaceDevice.Controls.Add(this.imeiInput1);
             //pictureBox1.Image = Image.FromFile(@"C:\Tools\logs\Rotating_earth_(large).gif");
             Program.logIt("WizardPagePlaceDevice_Initialize: ");
             tokenSource = new CancellationTokenSource();
@@ -273,6 +178,7 @@ namespace AviaFlowControl
         #region page scan in progress
         private void WizardPageInProcess_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
+            this.wizardPageInProcess.Controls.Add(this.imeiInput1);
             Task t = Task.Run(() =>
             {
                 bool done = false;
@@ -286,6 +192,16 @@ namespace AviaFlowControl
                         progressBar1.Value = Math.Min(step++, progressBar1.Maximum);
                         progressBar1.Update();
                     }));
+                    // check the progress
+                    string cmd = avia_device.GetString("device", "grade", "");
+                    if (string.Compare(cmd, "") == 0)
+                    {
+                        wizardControl1.Invoke(new Action(() =>
+                        {
+                            labelStatus.Text = "Inspection in progress";
+                        }));
+                    }
+
                     // check result
                     string grade = avia_device.GetString("device", "grade", "");                    
                     if (!string.IsNullOrEmpty(grade))
@@ -306,12 +222,13 @@ namespace AviaFlowControl
                 }));
             });
         }
-        #endregion
+#endregion
 
         #region page unload device
         private void WizardPageResult_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             Program.logIt("WizardPageResult_Initialize: ");
+            //this.wizardPageResult.Controls.Add(this.imeiInput1);
             // load grade
             {
                 utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
@@ -352,7 +269,7 @@ namespace AviaFlowControl
 
             }, tokenSource.Token);
         }
-        #endregion
+#endregion
 
     }
 }

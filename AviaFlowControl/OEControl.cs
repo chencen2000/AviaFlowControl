@@ -15,10 +15,6 @@ namespace AviaFlowControl
         static NetworkStream ns = null;
         public OEControl(IPAddress ip=null, int port=6290)
         {
-            client = new TcpClient();
-            IPAddress sip = ip == null ? IPAddress.Loopback : ip;
-            client.Connect(sip, port);
-            ns = client.GetStream();
         }
         public static bool connect(int port=6290, IPAddress ip = null)
         {

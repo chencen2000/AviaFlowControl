@@ -23,6 +23,7 @@ namespace AviaFlowControl
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+            //Application.Run(new Form2());
         }
 
         public static Tuple<int,string[]> run_exe(string exeFilename, string param, System.Collections.Specialized.StringDictionary env = null, int timeout = 60 * 1000)
@@ -47,6 +48,7 @@ namespace AviaFlowControl
                         foreach (DictionaryEntry de in env)
                         {
                             p.StartInfo.EnvironmentVariables.Add(de.Key as string, de.Value as string);
+                            //p.StartInfo.Environment.Add(de.Key as string, de.Value as string);
                         }
                     }
                     p.OutputDataReceived += (obj, args) =>

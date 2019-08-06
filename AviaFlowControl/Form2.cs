@@ -36,5 +36,9 @@ namespace AviaFlowControl
             e.Graphics.DrawImage(b, new Point(0, 0));
         }
 
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("OK");
+        }
     }
 }
