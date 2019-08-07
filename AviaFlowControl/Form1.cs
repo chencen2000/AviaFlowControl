@@ -41,6 +41,26 @@ namespace AviaFlowControl
             //});
             Task.Run(() => 
             {
+                // launch oe exe
+                utility.IniFile config = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("fdhome"), "AVIA", "config.ini"));
+                string ui = System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", config.GetString("config", "ui", @"evaoi-3.1.0.0\evaoi_3.1.0.0.exe"));
+                if (System.IO.File.Exists(ui))
+                {
+                    Process[] pp = Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(ui));
+                    if (pp.Length == 0)
+                    {
+                        Process p = new Process();
+                        p.StartInfo.FileName = ui;
+                        p.StartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(ui);
+                        p.Start();
+                        p.WaitForInputIdle();
+                        ShowWindow(p.MainWindowHandle, 2);
+                    }
+                    else
+                    {
+                        ShowWindow(pp[0].MainWindowHandle, 2);
+                    }
+                }
                 // connect to OE server
                 if(!OEControl.connect())
                 {
@@ -150,14 +170,6 @@ namespace AviaFlowControl
         private void WizardPageLogin_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             labelLoginStatus.Visible = false;
-            Task.Run(() => 
-            {
-                Process[] p = Process.GetProcessesByName("evaoi_3.1.0.0");
-                if (p.Length > 0)
-                {
-                    ShowWindow(p[0].MainWindowHandle, 2);
-                }
-            });
         }
         private void WizardPageLogin_Enter(object sender, EventArgs e)
         {
