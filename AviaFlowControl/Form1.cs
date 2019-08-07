@@ -118,12 +118,29 @@ namespace AviaFlowControl
                                     catch (Exception) { }
                                 }
                             }
+                            else
+                            {
+                                // log in fail.
+                                wizardControl1.Invoke(new Action(() =>
+                                {
+                                    labelLoginStatus.Text = $"Fail to login. Due to error: {res.Item1}";
+                                    labelLoginStatus.Visible = true;
+                                }));
+                            }
                         }
                     }
                     catch (Exception) { }
-                    finally { wizardPageLogin.Tag = null; }
+                    finally
+                    {
+                        wizardPageLogin.Tag = null;
+                        wizardControl1.Invoke(new Action(() =>
+                        {
+                            wizardPageLogin.Enabled = true;
+                        }));
+                    }
                 });
                 wizardPageLogin.Tag = t;
+                wizardPageLogin.Enabled = false;
             }
             else
             {
@@ -132,6 +149,7 @@ namespace AviaFlowControl
         }
         private void WizardPageLogin_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
+            labelLoginStatus.Visible = false;
             Task.Run(() => 
             {
                 Process[] p = Process.GetProcessesByName("evaoi_3.1.0.0");
