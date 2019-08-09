@@ -24,6 +24,9 @@ namespace AviaFlowControl
                 //textBox1.Text = textBox1.Text.Trim();
                 e.Handled = true;
                 textBox1.SelectAll();
+                // save to ini file
+                utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("fdhome"), "avia","AviaDevice.ini"));
+                ini.WriteValue("device","imei", textBox1.Text);
             }
         }
 
