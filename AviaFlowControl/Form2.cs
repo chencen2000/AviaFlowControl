@@ -54,6 +54,40 @@ namespace AviaFlowControl
         private void Form2_Load(object sender, EventArgs e)
         {
             imeiInput1.Focus();
+            if (!OEControl.connect())
+            {
+                MessageBox.Show("Fail to connect UI", "Error");
+            }
+        }
+
+        private void ButtonStart_Click(object sender, EventArgs e)
+        {
+            OEControl.start();
+        }
+
+        private void ButtonLoad_Click(object sender, EventArgs e)
+        {
+            OEControl.load();
+        }
+
+        private void ButtonScan_Click(object sender, EventArgs e)
+        {
+            OEControl.scan();
+        }
+
+        private void ButtonUnload_Click(object sender, EventArgs e)
+        {
+            OEControl.unload();
+        }
+
+        private void ButtonStop_Click(object sender, EventArgs e)
+        {
+            OEControl.stop();
+        }
+
+        private void Form2_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            OEControl.disconnect();
         }
     }
 }

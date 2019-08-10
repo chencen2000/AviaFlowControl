@@ -120,6 +120,7 @@ namespace AviaFlowControl
         {
             if (wizardPageLogin.Tag == null)
             {
+                this.Enabled = false;
                 Cursor.Current = Cursors.WaitCursor;
                 e.Cancel = true;
                 // start log in process
@@ -188,7 +189,15 @@ namespace AviaFlowControl
                         }
                     }
                     catch (Exception) { }
-                    finally { wizardPageLogin.Tag = null; }
+                    finally
+                    {
+                        this.Invoke(new Action(() => 
+                        {
+                            this.Enabled = true;
+                            wizardPageLogin.Tag = null;
+                        }));
+                        //wizardPageLogin.Tag = null;
+                    }
                 });
                 wizardPageLogin.Tag = t;
             }
@@ -260,6 +269,16 @@ namespace AviaFlowControl
         private void WizardPagePlaceDevice_Enter(object sender, EventArgs e)
         {
             this.imeiInput1.Focus();
+        }
+        private void WizardPagePlaceDevice_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
+        {
+            utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
+            string s = avia_device.GetString("device", "device", "");
+            if (string.Compare(s, "ready", true) != 0)
+            {
+                avia_device.WriteValue("device", "device", "ready");
+                e.Cancel = true;
+            }
         }
         #endregion
 
@@ -359,16 +378,25 @@ namespace AviaFlowControl
                         }
                     }
                 }
+                tt.Wait();
                 // device connect.
                 if (done)
                 {
                     this.Invoke(new Action(() => wizardControl1.NextPage()));
                 }
-
             }, tokenSource.Token);
         }
 
-
+        private void WizardPageResult_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
+        {
+            utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
+            string s = avia_device.GetString("device", "device", "");
+            if (string.Compare(s, "removed", true) != 0)
+            {
+                avia_device.WriteValue("device", "device", "removed");
+                e.Cancel = true;
+            }
+        }
 
 
         #endregion
@@ -378,13 +406,19 @@ namespace AviaFlowControl
         {
             //comboBoxModels.Items.Clear();
             comboBoxModels.DataSource = models.ToArray();
+            utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
+            //ini.WriteValue("device", "select", comboBoxModels.SelectedItem.ToString());
+            ini.DeleteSection("device");
         }
-        #endregion
-
         private void WizardPageSelect_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
             utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
             ini.WriteValue("device", "select", comboBoxModels.SelectedItem.ToString());
         }
+        #endregion
+
+
+
+
     }
 }

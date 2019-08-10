@@ -46,10 +46,10 @@
             this.labelStatus = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.wizardPageResult = new AeroWizard.WizardPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.labelGrade = new System.Windows.Forms.Label();
             this.imeiInput1 = new AviaFlowControl.IMEIInput();
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.wizardControl1)).BeginInit();
             this.wizardPageLogin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -183,9 +183,10 @@
             this.wizardPagePlaceDevice.Controls.Add(this.label6);
             this.wizardPagePlaceDevice.Controls.Add(this.pictureBox1);
             this.wizardPagePlaceDevice.Name = "wizardPagePlaceDevice";
-            this.wizardPagePlaceDevice.Size = new System.Drawing.Size(662, 282);
+            this.wizardPagePlaceDevice.Size = new System.Drawing.Size(662, 277);
             this.wizardPagePlaceDevice.TabIndex = 2;
             this.wizardPagePlaceDevice.Text = "Place the Device on Tray";
+            this.wizardPagePlaceDevice.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPagePlaceDevice_Commit);
             this.wizardPagePlaceDevice.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPagePlaceDevice_Initialize);
             this.wizardPagePlaceDevice.Enter += new System.EventHandler(this.WizardPagePlaceDevice_Enter);
             // 
@@ -248,7 +249,17 @@
             this.wizardPageResult.Size = new System.Drawing.Size(662, 277);
             this.wizardPageResult.TabIndex = 4;
             this.wizardPageResult.Text = "Grade Result";
+            this.wizardPageResult.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPageResult_Commit);
             this.wizardPageResult.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageResult_Initialize);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(580, 232);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "Print";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // label5
             // 
@@ -279,15 +290,6 @@
             this.imeiInput1.Name = "imeiInput1";
             this.imeiInput1.Size = new System.Drawing.Size(662, 42);
             this.imeiInput1.TabIndex = 2;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(580, 232);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Print";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
