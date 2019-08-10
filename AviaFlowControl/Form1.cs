@@ -42,6 +42,8 @@ namespace AviaFlowControl
             //});
             Task.Run(() => 
             {
+                // start oe app
+
                 // connect to OE server
                 if(!OEControl.connect())
                 {
@@ -122,6 +124,14 @@ namespace AviaFlowControl
                                     catch (Exception) { }
                                 }
                             }
+                            else
+                            {
+                                wizardControl1.Invoke(new Action(() =>
+                                {
+                                    labelLoginStatus.Text = $"Fail to login, error code: {res.Item1}";
+                                    labelLoginStatus.Visible = true;
+                                }));
+                            }
                         }
                     }
                     catch (Exception) { }
@@ -136,21 +146,21 @@ namespace AviaFlowControl
         }
         private void WizardPageLogin_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
-            Task.Run(() => 
-            {
-                Process[] p = Process.GetProcessesByName("evaoi_3.1.0.0");
-                if (p.Length > 0)
-                {
-                    ShowWindow(p[0].MainWindowHandle, 2);
-                }
-            });
+            labelLoginStatus.Visible = false;
+            //Task.Run(() => 
+            //{
+            //    Process[] p = Process.GetProcessesByName("evaoi_3.1.0.0");
+            //    if (p.Length > 0)
+            //    {
+            //        ShowWindow(p[0].MainWindowHandle, 2);
+            //    }
+            //});
         }
         private void WizardPageLogin_Enter(object sender, EventArgs e)
         {
             textBoxUsername.Focus();
         }
         #endregion
-
 
         #region page load device
         private void WizardPagePlaceDevice_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)

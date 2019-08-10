@@ -30,6 +30,7 @@
         {
             this.wizardControl1 = new AeroWizard.WizardControl();
             this.wizardPageLogin = new AeroWizard.WizardPage();
+            this.labelLoginStatus = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.textBoxUsername = new System.Windows.Forms.TextBox();
@@ -77,6 +78,7 @@
             // 
             // wizardPageLogin
             // 
+            this.wizardPageLogin.Controls.Add(this.labelLoginStatus);
             this.wizardPageLogin.Controls.Add(this.pictureBox2);
             this.wizardPageLogin.Controls.Add(this.textBoxPassword);
             this.wizardPageLogin.Controls.Add(this.textBoxUsername);
@@ -89,6 +91,16 @@
             this.wizardPageLogin.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPageLogin_Commit);
             this.wizardPageLogin.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageLogin_Initialize);
             this.wizardPageLogin.Enter += new System.EventHandler(this.WizardPageLogin_Enter);
+            // 
+            // labelLoginStatus
+            // 
+            this.labelLoginStatus.AutoSize = true;
+            this.labelLoginStatus.Location = new System.Drawing.Point(166, 177);
+            this.labelLoginStatus.Name = "labelLoginStatus";
+            this.labelLoginStatus.Size = new System.Drawing.Size(123, 17);
+            this.labelLoginStatus.TabIndex = 5;
+            this.labelLoginStatus.Text = "Login Failure, error ";
+            this.labelLoginStatus.Visible = false;
             // 
             // pictureBox2
             // 
@@ -199,7 +211,7 @@
             this.wizardPageInProcess.Controls.Add(this.labelStatus);
             this.wizardPageInProcess.Controls.Add(this.progressBar1);
             this.wizardPageInProcess.Name = "wizardPageInProcess";
-            this.wizardPageInProcess.Size = new System.Drawing.Size(662, 306);
+            this.wizardPageInProcess.Size = new System.Drawing.Size(662, 311);
             this.wizardPageInProcess.TabIndex = 3;
             this.wizardPageInProcess.Text = "In Progress ...";
             this.wizardPageInProcess.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageInProcess_Initialize);
@@ -229,7 +241,7 @@
             this.wizardPageResult.Controls.Add(this.labelGrade);
             this.wizardPageResult.Name = "wizardPageResult";
             this.wizardPageResult.NextPage = this.wizardPageSelect;
-            this.wizardPageResult.Size = new System.Drawing.Size(662, 306);
+            this.wizardPageResult.Size = new System.Drawing.Size(662, 311);
             this.wizardPageResult.TabIndex = 4;
             this.wizardPageResult.Text = "Grade Result";
             this.wizardPageResult.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageResult_Initialize);
@@ -314,6 +326,7 @@
         private AeroWizard.WizardPage wizardPageSelect;
         private System.Windows.Forms.ComboBox comboBoxModels;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelLoginStatus;
     }
 }
 
