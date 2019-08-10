@@ -20,6 +20,7 @@ namespace AviaFlowControl
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         CancellationTokenSource tokenSource = null;
+        
         public Form1()
         {
             InitializeComponent();
@@ -112,6 +113,9 @@ namespace AviaFlowControl
                                         {
                                             wizardControl1.NextPage();
                                         }));
+                                        // clear ini device section
+                                        utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
+                                        ini.DeleteSection("device");
                                         // OE Control start
                                         OEControl.start();
                                     }
@@ -301,10 +305,22 @@ namespace AviaFlowControl
             }, tokenSource.Token);
         }
 
+
+
+
         #endregion
 
-
-
-
+        #region model selection
+        private void WizardPageSelect_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
+        {
+            comboBoxModels.Items.Clear();
+            string dir = @"C:\Tools\avia\M2\Profile";
+            foreach(string s in System.IO.Directory.GetDirectories(dir))
+            {
+                string m = System.IO.Path.GetFileName(s);
+                comboBoxModels.Items.Add(m);
+            }
+        }
+        #endregion
     }
 }
