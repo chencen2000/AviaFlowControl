@@ -20,7 +20,8 @@ namespace AviaFlowControl
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         CancellationTokenSource tokenSource = null;
-        
+        List<string> models = new List<string>();
+
         public Form1()
         {
             InitializeComponent();
@@ -43,15 +44,67 @@ namespace AviaFlowControl
             Task.Run(() => 
             {
                 // start oe app
+                utility.IniFile config = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "config.ini"));
+                string s = config.GetString("ui", "app", @"evaoi-3.1.0.3\evaoi-3.1.0.3.exe");
+                string ui_exe = System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", s);
+                s = System.IO.Path.GetFileNameWithoutExtension(ui_exe);
+                Process[] p = Process.GetProcessesByName(s);
+                if (p.Length > 0)
+                {
+                    ShowWindow(p[0].MainWindowHandle, 2);
+                }
+                else
+                {
+                    if (System.IO.File.Exists(ui_exe))
+                    {
+                        try
+                        {
+                            Process ui = new Process();
+                            ui.StartInfo.FileName = ui_exe;
+                            ui.StartInfo.Arguments = "-ControlMode";
+                            ui.StartInfo.UseShellExecute = true;
+                            ui.StartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(ui_exe);
+                            ui.Start();
+                            ui.WaitForInputIdle();
+                        }
+                        catch (Exception) { }
+                    }
+                }
 
                 // connect to OE server
-                if(!OEControl.connect())
+                if (!OEControl.connect())
                 {
                     // fail to connect the OE server
                     this.Invoke(new Action(() => 
                     {
                         MessageBox.Show("Fail to connect UI", "Error");
                     }));
+                }
+                else
+                {
+                    // connected
+                    // load models
+                    s = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(ui_exe), "evaoi.xml");
+                    if (System.IO.File.Exists(s))
+                    {
+                        XmlDocument doc = new XmlDocument();
+                        try
+                        {
+                            doc.Load(s);
+                            if (doc.DocumentElement != null)
+                            {
+                                s = doc.DocumentElement["system"]?["ModelDir"]?.InnerText;
+                                if (System.IO.Directory.Exists(s))
+                                {
+                                    foreach (string m in System.IO.Directory.GetDirectories(s))
+                                    {
+                                        models.Add(System.IO.Path.GetFileName(m));                                       
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception) { }
+                    }
                 }
             });
         }
@@ -323,14 +376,15 @@ namespace AviaFlowControl
         #region model selection
         private void WizardPageSelect_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
-            comboBoxModels.Items.Clear();
-            string dir = @"C:\Tools\avia\M2\Profile";
-            foreach(string s in System.IO.Directory.GetDirectories(dir))
-            {
-                string m = System.IO.Path.GetFileName(s);
-                comboBoxModels.Items.Add(m);
-            }
+            //comboBoxModels.Items.Clear();
+            comboBoxModels.DataSource = models.ToArray();
         }
         #endregion
+
+        private void WizardPageSelect_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
+        {
+            utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
+            ini.WriteValue("device", "select", comboBoxModels.SelectedItem.ToString());
+        }
     }
 }
