@@ -46,7 +46,7 @@ namespace AviaFlowControl
                 // start oe app
                 utility.IniFile config = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "config.ini"));
                 string s = config.GetString("ui", "app", @"evaoi-3.1.0.3\evaoi-3.1.0.3.exe");
-                string ui_exe = System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", s);
+                string ui_exe = System.IO.Path.GetFullPath(s);
                 s = System.IO.Path.GetFileNameWithoutExtension(ui_exe);
                 Process[] p = Process.GetProcessesByName(s);
                 if (p.Length > 0)
@@ -113,9 +113,9 @@ namespace AviaFlowControl
             OEControl.stop();
             OEControl.disconnect();
         }
-        #endregion
+#endregion
 
-        #region login page
+#region login page
         private void WizardPageLogin_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
             if (wizardPageLogin.Tag == null)
@@ -222,9 +222,9 @@ namespace AviaFlowControl
         {
             textBoxUsername.Focus();
         }
-        #endregion
+#endregion
 
-        #region page load device
+#region page load device
         private void WizardPagePlaceDevice_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             this.wizardPagePlaceDevice.Controls.Add(this.imeiInput1);
@@ -280,9 +280,9 @@ namespace AviaFlowControl
                 e.Cancel = true;
             }
         }
-        #endregion
+#endregion
 
-        #region page scan in progress
+#region page scan in progress
         private void WizardPageInProcess_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             this.wizardPageInProcess.Controls.Add(this.imeiInput1);
@@ -338,9 +338,9 @@ namespace AviaFlowControl
         {
             this.imeiInput1.Focus();
         }
-        #endregion
+#endregion
 
-        #region page unload device
+#region page unload device
         private void WizardPageResult_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             Program.logIt("WizardPageResult_Initialize: ");
@@ -399,13 +399,14 @@ namespace AviaFlowControl
         }
 
 
-        #endregion
+#endregion
 
-        #region model selection
+#region model selection
         private void WizardPageSelect_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             //comboBoxModels.Items.Clear();
-            comboBoxModels.DataSource = models.ToArray();
+            if(comboBoxModels.Items.Count==0)
+                comboBoxModels.DataSource = models.ToArray();
             utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
             //ini.WriteValue("device", "select", comboBoxModels.SelectedItem.ToString());
             ini.DeleteSection("device");
@@ -413,9 +414,10 @@ namespace AviaFlowControl
         private void WizardPageSelect_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
             utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
+            //comboBoxModels.Tag = comboBoxModels.SelectedItem;
             ini.WriteValue("device", "select", comboBoxModels.SelectedItem.ToString());
         }
-        #endregion
+#endregion
 
 
 
