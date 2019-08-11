@@ -46,7 +46,7 @@
             this.labelStatus = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.wizardPageResult = new AeroWizard.WizardPage();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonPrint = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.labelGrade = new System.Windows.Forms.Label();
             this.imeiInput1 = new AviaFlowControl.IMEIInput();
@@ -241,7 +241,7 @@
             // wizardPageResult
             // 
             this.wizardPageResult.AllowBack = false;
-            this.wizardPageResult.Controls.Add(this.button1);
+            this.wizardPageResult.Controls.Add(this.buttonPrint);
             this.wizardPageResult.Controls.Add(this.label5);
             this.wizardPageResult.Controls.Add(this.labelGrade);
             this.wizardPageResult.Name = "wizardPageResult";
@@ -252,14 +252,15 @@
             this.wizardPageResult.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPageResult_Commit);
             this.wizardPageResult.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageResult_Initialize);
             // 
-            // button1
+            // buttonPrint
             // 
-            this.button1.Location = new System.Drawing.Point(580, 232);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Print";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonPrint.Location = new System.Drawing.Point(580, 232);
+            this.buttonPrint.Name = "buttonPrint";
+            this.buttonPrint.Size = new System.Drawing.Size(75, 23);
+            this.buttonPrint.TabIndex = 2;
+            this.buttonPrint.Text = "Print";
+            this.buttonPrint.UseVisualStyleBackColor = true;
+            this.buttonPrint.Click += new System.EventHandler(this.ButtonPrint_Click);
             // 
             // label5
             // 
@@ -342,7 +343,7 @@
         private System.Windows.Forms.ComboBox comboBoxModels;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelLoginStatus;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonPrint;
     }
 }
 

@@ -398,10 +398,25 @@ namespace AviaFlowControl
             }
         }
 
+        private void ButtonPrint_Click(object sender, EventArgs e)
+        {
+            // hold for print
+            string avia = System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("fdhome"), "avia");
+            string tool = System.IO.Path.Combine(avia, "fdprinter", "fdprinter.exe");
 
-#endregion
+            // invoke fdprinter
+            if (System.IO.File.Exists(tool))
+            {
+                System.Collections.Specialized.StringDictionary envs = new System.Collections.Specialized.StringDictionary();
+                envs.Add("APSTHOME", System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "fdprinter"));
+                //Tuple<int, string[]> res = Program.run_exe(@"c:\windows\system32\notepad.exe", param, envs);
+                Tuple<int, string[]> res = Program.run_exe(tool, $"-print -portnumber=1 -inputxml=\"{System.IO.Path.Combine(avia, "label.xml")}\"", envs, wd:System.IO.Path.GetDirectoryName(tool));
+                
+            }
+        }
+        #endregion
 
-#region model selection
+        #region model selection
         private void WizardPageSelect_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             //comboBoxModels.Items.Clear();
@@ -417,9 +432,10 @@ namespace AviaFlowControl
             //comboBoxModels.Tag = comboBoxModels.SelectedItem;
             ini.WriteValue("device", "select", comboBoxModels.SelectedItem.ToString());
         }
-#endregion
 
 
+
+        #endregion
 
 
     }

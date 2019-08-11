@@ -26,7 +26,7 @@ namespace AviaFlowControl
             //Application.Run(new Form2());
         }
 
-        public static Tuple<int,string[]> run_exe(string exeFilename, string param, System.Collections.Specialized.StringDictionary env = null, int timeout = 60 * 1000)
+        public static Tuple<int,string[]> run_exe(string exeFilename, string param, System.Collections.Specialized.StringDictionary env = null, int timeout = 60 * 1000, string wd="")
         {
             int exitCode = -1;
             List<string> ret = new List<string>();
@@ -43,6 +43,8 @@ namespace AviaFlowControl
                     p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                     p.StartInfo.RedirectStandardOutput = true;
                     p.StartInfo.CreateNoWindow = true;
+                    if (!string.IsNullOrEmpty(wd))
+                        p.StartInfo.WorkingDirectory = wd;
                     if (env != null && env.Count > 0)
                     {
                         foreach (DictionaryEntry de in env)

@@ -88,6 +88,7 @@ namespace AviaFlowControl
             {
                 try
                 {
+                    ns.ReadTimeout = 1000;
                     string cmd = "Stop\n";
                     byte[] data = System.Text.Encoding.UTF8.GetBytes(cmd);
                     ns.Write(data, 0, data.Length);
