@@ -159,6 +159,7 @@
             this.wizardPageSelect.Text = "Select device";
             this.wizardPageSelect.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPageSelect_Commit);
             this.wizardPageSelect.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageSelect_Initialize);
+            this.wizardPageSelect.Enter += new System.EventHandler(this.WizardPageSelect_Enter);
             // 
             // comboBoxModels
             // 

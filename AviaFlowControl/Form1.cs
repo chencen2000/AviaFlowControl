@@ -21,6 +21,7 @@ namespace AviaFlowControl
 
         CancellationTokenSource tokenSource = null;
         List<string> models = new List<string>();
+        Process theApp = null;
 
         public Form1()
         {
@@ -52,6 +53,7 @@ namespace AviaFlowControl
                 if (p.Length > 0)
                 {
                     ShowWindow(p[0].MainWindowHandle, 2);
+                    theApp = p[0];
                 }
                 else
                 {
@@ -64,6 +66,7 @@ namespace AviaFlowControl
                             ui.StartInfo.Arguments = "-ControlMode";
                             ui.StartInfo.UseShellExecute = true;
                             ui.StartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(ui_exe);
+                            theApp = ui;
                             ui.Start();
                             ui.WaitForInputIdle();
                         }
@@ -112,6 +115,22 @@ namespace AviaFlowControl
         {
             OEControl.stop();
             OEControl.disconnect();
+            // clean up
+            if (theApp != null)
+            {
+                try { theApp.Kill(); }
+                catch (Exception) { }
+            }
+            // shutdown FDPhoneRecognition.exe
+            {
+                Process ui = new Process();
+                ui.StartInfo.FileName = System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "FDPhoneRecognition.exe");
+                ui.StartInfo.Arguments = "-Kill-TcpServer";
+                ui.StartInfo.UseShellExecute = false;
+                ui.StartInfo.CreateNoWindow = true;
+                ui.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                ui.Start();
+            }
         }
 #endregion
 
@@ -433,11 +452,13 @@ namespace AviaFlowControl
             //comboBoxModels.Tag = comboBoxModels.SelectedItem;
             ini.WriteValue("device", "select", comboBoxModels.SelectedItem.ToString());
         }
-
+        private void WizardPageSelect_Enter(object sender, EventArgs e)
+        {
+            this.imeiInput1.Focus();
+        }
 
 
         #endregion
-
 
     }
 }
