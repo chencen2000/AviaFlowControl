@@ -419,8 +419,9 @@ namespace AviaFlowControl
         #region model selection
         private void WizardPageSelect_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
+            this.wizardPageSelect.Controls.Add(this.imeiInput1);
             //comboBoxModels.Items.Clear();
-            if(comboBoxModels.Items.Count==0)
+            if (comboBoxModels.Items.Count==0)
                 comboBoxModels.DataSource = models.ToArray();
             utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
             //ini.WriteValue("device", "select", comboBoxModels.SelectedItem.ToString());
