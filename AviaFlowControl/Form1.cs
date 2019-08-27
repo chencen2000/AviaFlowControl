@@ -22,6 +22,7 @@ namespace AviaFlowControl
         CancellationTokenSource tokenSource = null;
         List<string> models = new List<string>();
         Process theApp = null;
+        Rectangle theRect = Rectangle.Empty; // new Rectangle(582,432,10,12);
 
         public Form1()
         {
@@ -46,7 +47,21 @@ namespace AviaFlowControl
             {
                 // start oe app
                 utility.IniFile config = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "config.ini"));
-                string s = config.GetString("ui", "app", @"evaoi-3.1.0.3\evaoi-3.1.0.3.exe");
+                string s = config.GetString("ui", "rect", "");
+                if (string.IsNullOrEmpty(s))
+                {
+                    try
+                    {
+                        string[] ss = s.Split(',');
+                        int x = Int32.Parse(ss[0]);
+                        int y = Int32.Parse(ss[1]);
+                        int w = Int32.Parse(ss[2]);
+                        int h = Int32.Parse(ss[3]);
+                        Rectangle theRect = new Rectangle(x, y, w, h);
+                    }
+                    catch (Exception) { }
+                }
+                s = config.GetString("ui", "app", @"evaoi-3.1.0.3\evaoi-3.1.0.3.exe");
                 string ui_exe = System.IO.Path.GetFullPath(s);
                 s = System.IO.Path.GetFileNameWithoutExtension(ui_exe);
                 Process[] p = Process.GetProcessesByName(s);
@@ -136,7 +151,13 @@ namespace AviaFlowControl
 
 #region login page
         private void WizardPageLogin_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
-        {
+        {            
+            //Point p = System.Windows.Forms.Cursor.Position;
+            //Point p1 = new Point();
+            //p1.X = p.X - this.DesktopLocation.X ;
+            //p1.Y = p.Y - this.DesktopLocation.Y ;
+            //Program.logIt($"position: {p1} on N {theRect}: {theRect.Contains(p1)}");
+
             if (wizardPageLogin.Tag == null)
             {
                 this.Enabled = false;
@@ -292,6 +313,17 @@ namespace AviaFlowControl
         private void WizardPagePlaceDevice_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
             utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
+
+            if (!theRect.IsEmpty)
+            {
+                Point p = System.Windows.Forms.Cursor.Position;
+                Point p1 = this.PointToClient(p);
+                Program.logIt($"position: {p1} on N {theRect.Contains(p1)}");
+                if (theRect.Contains(p1))
+                {
+                    avia_device.WriteValue("override", "grade", "D");
+                }
+            }
             string s = avia_device.GetString("device", "device", "");
             if (string.Compare(s, "ready", true) != 0)
             {
@@ -449,16 +481,27 @@ namespace AviaFlowControl
         private void WizardPageSelect_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
             utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
+            if (!theRect.IsEmpty)
+            {
+                Point p = System.Windows.Forms.Cursor.Position;
+                Point p1 = this.PointToClient(p);
+                Program.logIt($"position: {p1} on N {theRect.Contains(p1)}");
+                if (theRect.Contains(p1))
+                {
+                    ini.WriteValue("override", "grade", "D");
+                }
+            }
             //comboBoxModels.Tag = comboBoxModels.SelectedItem;
             ini.WriteValue("device", "select", comboBoxModels.SelectedItem.ToString());
         }
         private void WizardPageSelect_Enter(object sender, EventArgs e)
         {
+            utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
+            ini.DeleteSection("override");
             this.imeiInput1.Focus();
         }
 
 
         #endregion
-
     }
 }
