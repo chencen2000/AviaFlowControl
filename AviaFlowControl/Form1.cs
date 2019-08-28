@@ -268,7 +268,7 @@ namespace AviaFlowControl
         private void WizardPagePlaceDevice_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             this.wizardPagePlaceDevice.Controls.Add(this.imeiInput1);
-            this.imeiInput1.clear();
+            //this.imeiInput1.clear();
             this.imeiInput1.Focus();
             //pictureBox1.Image = Image.FromFile(@"C:\Tools\logs\Rotating_earth_(large).gif");
             Program.logIt("WizardPagePlaceDevice_Initialize: ");
@@ -498,6 +498,7 @@ namespace AviaFlowControl
         {
             utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
             ini.DeleteSection("override");
+            this.imeiInput1.clear();
             this.imeiInput1.Focus();
         }
 
