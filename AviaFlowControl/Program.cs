@@ -12,17 +12,18 @@ namespace AviaFlowControl
     {
         MyApplicationContext()
         {
-            Task.Run(() => 
-            {
-                //System.Threading.Thread.Sleep(1000);
-                test();
-            });
+            //Task.Run(() => 
+            //{
+            //    //System.Threading.Thread.Sleep(1000);
+            //    test();
+            //});
+            test();
             Program.logIt("MyApplicationContext: --");
         }
 
         public static void start()
         {
-            //Application.Run(new MyApplicationContext());
+            Application.Run(new MyApplicationContext());
             //test();
         }
 
@@ -30,10 +31,20 @@ namespace AviaFlowControl
         {
             Program.logIt("test: ++");
             //
-            System.Threading.Thread.Sleep(1000);
+            FormLogIn f1 = new FormLogIn();
+            f1.Show();
+            //f1.FormClosed += (s, e) => 
+            //{
+            //    Form3 f2 = new Form3();
+            //    f2.Show();
+            //    f2.FormClosed += (s1, e1) => { ExitThread(); };
+            //};
+            //System.Threading.Thread.Sleep(1000);
+            //f1.Close();
             Program.logIt("test: --");
-            ExitThread();
+            //ExitThread();
         }
+
     }
 
     static class Program
@@ -48,14 +59,14 @@ namespace AviaFlowControl
         [STAThread]
         static void Main()
         {
-#if true
+#if !true
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1());
             Application.Run(new Form3());
 #else
-            //MyApplicationContext.start();
-            test();
+            MyApplicationContext.start();
+            //test();
 #endif
         }
 

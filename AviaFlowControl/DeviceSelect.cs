@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace AviaFlowControl
 {
-    public partial class Form3 : Form
+    public partial class DeviceSelect : UserControl
     {
-        public Form3()
+        public DeviceSelect()
         {
             InitializeComponent();
-        }
-
-        private void Form3_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Application.ExitThread();
         }
     }
 }
