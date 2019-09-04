@@ -8,6 +8,34 @@ using System.Windows.Forms;
 
 namespace AviaFlowControl
 {
+    class MyApplicationContext : ApplicationContext
+    {
+        MyApplicationContext()
+        {
+            Task.Run(() => 
+            {
+                //System.Threading.Thread.Sleep(1000);
+                test();
+            });
+            Program.logIt("MyApplicationContext: --");
+        }
+
+        public static void start()
+        {
+            //Application.Run(new MyApplicationContext());
+            //test();
+        }
+
+        void test()
+        {
+            Program.logIt("test: ++");
+            //
+            System.Threading.Thread.Sleep(1000);
+            Program.logIt("test: --");
+            ExitThread();
+        }
+    }
+
     static class Program
     {
         public static void logIt(String msg)
@@ -20,10 +48,15 @@ namespace AviaFlowControl
         [STAThread]
         static void Main()
         {
+#if !true
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
             //Application.Run(new Form2());
+#else
+            //MyApplicationContext.start();
+            test();
+#endif
         }
 
         public static Tuple<int,string[]> run_exe(string exeFilename, string param, System.Collections.Specialized.StringDictionary env = null, int timeout = 60 * 1000, string wd="")
@@ -94,6 +127,20 @@ namespace AviaFlowControl
             }
             Program.logIt(string.Format("[runExe]: -- ret={0}", exitCode));
             return new Tuple<int, string[]>(exitCode, ret.ToArray());
+        }
+        static void test()
+        {
+            try
+            {
+                string s = System.IO.File.ReadAllText("avia_models.json");
+                var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+                var data = jss.Deserialize<List<Dictionary<string,object>>>(s);
+                foreach(var v in data.GroupBy(d => d["Size"]))
+                {
+
+                }
+            }
+            catch (Exception) { }
         }
     }
 }
