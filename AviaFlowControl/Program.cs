@@ -65,8 +65,12 @@ namespace AviaFlowControl
             //Application.Run(new Form1());
             Application.Run(new Form3());
 #else
-            MyApplicationContext.start();
+            //MyApplicationContext.start();
             //test();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Form1());
+            Application.Run(new FormLogIn());
 #endif
         }
 

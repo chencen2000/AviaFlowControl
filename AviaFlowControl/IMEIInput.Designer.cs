@@ -52,20 +52,20 @@
             this.textBox1.Location = new System.Drawing.Point(70, 0);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(456, 30);
+            this.textBox1.Size = new System.Drawing.Size(456, 33);
             this.textBox1.TabIndex = 1;
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox1_KeyPress);
             // 
             // IMEIInput
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Name = "IMEIInput";
-            this.Size = new System.Drawing.Size(526, 30);
+            this.Size = new System.Drawing.Size(526, 33);
             this.Enter += new System.EventHandler(this.IMEIInput_Enter);
             this.ResumeLayout(false);
             this.PerformLayout();

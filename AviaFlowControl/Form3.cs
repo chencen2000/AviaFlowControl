@@ -21,5 +21,12 @@ namespace AviaFlowControl
         {
             Application.ExitThread();
         }
+
+        private void Form3_Load(object sender, EventArgs e)
+        {
+            DeviceSelect _ds = new DeviceSelect();
+            panel1.Controls.Add(_ds);
+            _ds.Dock = DockStyle.Fill;
+        }
     }
 }
