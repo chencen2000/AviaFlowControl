@@ -17,11 +17,6 @@ namespace AviaFlowControl
             InitializeComponent();
         }
 
-        private void Form3_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Application.ExitThread();
-        }
-
         private void Form3_Load(object sender, EventArgs e)
         {
             DeviceSelect _ds = new DeviceSelect();

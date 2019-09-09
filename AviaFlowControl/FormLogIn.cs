@@ -13,6 +13,7 @@ namespace AviaFlowControl
 {
     public partial class FormLogIn : Form
     {
+        public bool terminate = true;
         public FormLogIn()
         {
             InitializeComponent();
@@ -28,14 +29,29 @@ namespace AviaFlowControl
             // login
             labelLoginStatus.Visible = false;
             this.Enabled = false;
-            Task.Run(() => 
+            string u = textBoxUsername.Text;
+            string p = textBoxPassword.Text;
+            new TaskFactory().StartNew(new Action<object>((o) => 
             {
-                //System.Threading.Thread.Sleep(3000);
-                if (login_task())
+                Tuple<string, string> up = (Tuple<string, string>)o;
+                if (login_task(up.Item1, up.Item2))
                 {
-                    login_completed();
+                    terminate = false;
+                    this.Invoke(new Action(() =>
+                    {
+                        this.Close();
+                    }));
+                    //login_completed();
                 }
-            });
+            }), new Tuple<string, string>(u, p));
+            //Task.Run(() =>
+            //{
+            //    System.Threading.Thread.Sleep(3000);
+            //    if (login_task_1(u, p))
+            //    {
+            //        login_completed();
+            //    }
+            //});
         }
 
         void login_completed()
@@ -50,12 +66,17 @@ namespace AviaFlowControl
             else
             {
                 this.Close();
-                Form3 f = new Form3();
-                f.Show();
+                //Form3 f = new Form3();
+                //f.Show();
             }
         }
 
-        bool login_task()
+        bool login_task_1(string u,string p)
+        {
+            bool ret = false;
+            return ret;
+        }
+        bool login_task(string u, string p)
         {
             bool ret = false;
             try
@@ -63,7 +84,7 @@ namespace AviaFlowControl
                 string dir = System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "hydra");
                 System.IO.File.Delete(System.IO.Path.Combine(dir, "HydraLogin.xml"));
                 string exe = System.IO.Path.Combine(dir, "HydraLogin.exe");
-                string param = $"-u={textBoxUsername.Text} -p={textBoxPassword.Text}";
+                string param = $"-u={u} -p={p}";
                 if (System.IO.File.Exists(exe))
                 {
                     System.Collections.Specialized.StringDictionary envs = new System.Collections.Specialized.StringDictionary();
@@ -112,6 +133,11 @@ namespace AviaFlowControl
                 }));
             }
             return ret;
+        }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

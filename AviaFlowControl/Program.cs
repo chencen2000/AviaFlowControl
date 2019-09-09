@@ -17,7 +17,8 @@ namespace AviaFlowControl
             //    //System.Threading.Thread.Sleep(1000);
             //    test();
             //});
-            test();
+            //test();
+            startup();
             Program.logIt("MyApplicationContext: --");
         }
 
@@ -45,6 +46,44 @@ namespace AviaFlowControl
             //ExitThread();
         }
 
+        void startup()
+        {
+            Program.logIt("startup: ++");
+            SplashScreen ss = new SplashScreen();
+            ss.Show();
+            ss.FormClosed += (s, o) => 
+            {
+                FormLogIn f1 = new FormLogIn();
+                f1.StartPosition = ss.StartPosition;
+                f1.Show();
+                f1.FormClosed += (s1, o1) => 
+                {
+                    if (f1.terminate)
+                        ExitThread();
+                    else
+                    {
+                        startup_wizard();
+                    }
+                };
+            };
+            Program.logIt("startup: --");
+        }
+
+        void startup_wizard()
+        {
+            Program.logIt("startup_wizard: ++");
+#if !true
+            Form3 f = new Form3();
+            f.Show();
+            f.FormClosed += (s, o) => { ExitThread(); };
+#else
+            Form4 f = new Form4();
+            f.Show();
+            f.FormClosed += (s, o) => { ExitThread(); };
+#endif
+            Program.logIt("startup_wizard: --");
+        }
+
     }
 
     static class Program
@@ -66,11 +105,11 @@ namespace AviaFlowControl
             Application.Run(new Form3());
 #else
             //MyApplicationContext.start();
-            //test();
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
-            Application.Run(new FormLogIn());
+            test();
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            ////Application.Run(new Form1());
+            //Application.Run(new FormLogIn());
 #endif
         }
 
@@ -147,13 +186,7 @@ namespace AviaFlowControl
         {
             try
             {
-                string s = System.IO.File.ReadAllText("avia_models.json");
-                var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
-                var data = jss.Deserialize<List<Dictionary<string,object>>>(s);
-                foreach(var v in data.GroupBy(d => d["Size"]))
-                {
-
-                }
+                util.read_color();
             }
             catch (Exception) { }
         }
