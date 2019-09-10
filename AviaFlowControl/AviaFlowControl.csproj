@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorSample.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ColorSample.Designer.cs">
+      <DependentUpon>ColorSample.cs</DependentUpon>
+    </Compile>
     <Compile Include="DeviceSelect.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -93,6 +99,12 @@
       <DependentUpon>IMEIInput.cs</DependentUpon>
     </Compile>
     <Compile Include="IniFile.cs" />
+    <Compile Include="ModelPicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ModelPicker.Designer.cs">
+      <DependentUpon>ModelPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="OEControl.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,6 +115,9 @@
       <DependentUpon>SplashScreen.cs</DependentUpon>
     </Compile>
     <Compile Include="util.cs" />
+    <EmbeddedResource Include="ColorSample.resx">
+      <DependentUpon>ColorSample.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DeviceSelect.resx">
       <DependentUpon>DeviceSelect.cs</DependentUpon>
     </EmbeddedResource>
@@ -123,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="IMEIInput.resx">
       <DependentUpon>IMEIInput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelPicker.resx">
+      <DependentUpon>ModelPicker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -19,9 +19,10 @@ namespace AviaFlowControl
 
         private void Form3_Load(object sender, EventArgs e)
         {
-            DeviceSelect _ds = new DeviceSelect();
-            panel1.Controls.Add(_ds);
-            _ds.Dock = DockStyle.Fill;
+            //DeviceSelect _ds = new DeviceSelect();
+            ModelPicker mp = new ModelPicker();
+            mp.Dock = DockStyle.Fill;
+            panel1.Controls.Add(mp);
         }
     }
 }
