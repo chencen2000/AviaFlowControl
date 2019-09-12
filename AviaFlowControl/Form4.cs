@@ -39,11 +39,37 @@ namespace AviaFlowControl
                 Task.Run(() =>
                 {
                     // get color value.
-                    System.Threading.Thread.Sleep(3000);
-                    this.Invoke(new Action(() => {
-                        wizardPageScanColor.Tag = false;
-                        wizardControl1.NextPage();
-                    }));
+                    DateTime _start = DateTime.Now;
+                    bool done = false;
+                    while(!done && (DateTime.Now - _start).TotalMinutes < 1)
+                    {
+                        Tuple<bool, Color> res = util.read_color();
+                        if (res.Item1)
+                        {
+                            done = true;
+                            // write color rgb to ini
+                            utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
+                            avia_device.WriteValue("device", "rgb", $"{res.Item2.R},{res.Item2.G},{res.Item2.B}");
+                        }
+                    }
+                    if (!done)
+                    {
+                        //this.Invoke(new Action(() =>
+                        //{
+                        //    MessageBox.Show("Fail to get color, please try again.", "Error");
+                        //}));
+                        MessageBox.Show("Fail to get color, please try again.", "Error");
+                        this.UseWaitCursor = false;
+                    }
+                    else
+                    {
+                        //System.Threading.Thread.Sleep(3000);
+                        this.Invoke(new Action(() =>
+                        {
+                            wizardPageScanColor.Tag = false;
+                            wizardControl1.NextPage();
+                        }));
+                    }
                 });
                 e.Cancel = true;
             }
@@ -83,7 +109,16 @@ namespace AviaFlowControl
                 Task.Run(() => 
                 {
                     // check please device in avia 
-                    System.Threading.Thread.Sleep(3000);
+                    utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
+                    bool done = false;
+                    while (!done)
+                    {
+                        string sid = avia_device.GetString("device", "sizeid", "");
+                        if (!string.IsNullOrEmpty(sid))
+                            done = true;
+                        else
+                            System.Threading.Thread.Sleep(1000);
+                    }
                     this.Invoke(new Action(() => {
                         wizardPagePlaceDevice.Tag = false;
                         wizardControl1.NextPage();
@@ -117,13 +152,32 @@ namespace AviaFlowControl
                 }
                 this.Invoke(new Action(() => {
                     //wizardPagePlaceDevice.Tag = false;
-                    wizardControl1.NextPage();
+                    //wizardControl1.NextPage();
+                    wizardControl1.NextPage(wizardPageResult);
                 }));
             });
         }
         private void WizardPageScan_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             this.wizardPageScan.Controls.Add(this.imeiInput1);
+        }
+        #endregion
+
+        #region wizard pre-scan
+        private void WizardPagePreScan_Enter(object sender, EventArgs e)
+        {
+            this.UseWaitCursor = false;
+            this.imeiInput1.Focus();
+        }
+        private void WizardPagePreScan_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
+        {
+            this.wizardPageScanColor.Controls.Add(this.imeiInput1);
+        }
+        void get_colorid_from_rgb()
+        {
+            utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
+            string ts = avia_device.GetString("device", "rgb", "");
+
         }
         #endregion
 

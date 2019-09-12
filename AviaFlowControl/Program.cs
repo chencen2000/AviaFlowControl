@@ -98,14 +98,14 @@ namespace AviaFlowControl
         [STAThread]
         static void Main()
         {
-#if true
+#if !true
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1());
             Application.Run(new Form3());
 #else
-            //MyApplicationContext.start();
-            test();
+            MyApplicationContext.start();
+            //test();
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
             ////Application.Run(new Form1());

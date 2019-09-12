@@ -33,10 +33,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.imeiInput1 = new AviaFlowControl.IMEIInput();
             this.wizardPagePlaceDevice = new AeroWizard.WizardPage();
+            this.wizardPagePreScan = new AeroWizard.WizardPage();
             this.wizardPageScan = new AeroWizard.WizardPage();
-            this.wizardPageResult = new AeroWizard.WizardPage();
-            this.labelStatus = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.labelStatus = new System.Windows.Forms.Label();
+            this.wizardPageResult = new AeroWizard.WizardPage();
             ((System.ComponentModel.ISupportInitialize)(this.wizardControl1)).BeginInit();
             this.wizardPageScanColor.SuspendLayout();
             this.wizardPageScan.SuspendLayout();
@@ -51,6 +52,7 @@
             this.wizardControl1.Name = "wizardControl1";
             this.wizardControl1.Pages.Add(this.wizardPageScanColor);
             this.wizardControl1.Pages.Add(this.wizardPagePlaceDevice);
+            this.wizardControl1.Pages.Add(this.wizardPagePreScan);
             this.wizardControl1.Pages.Add(this.wizardPageScan);
             this.wizardControl1.Pages.Add(this.wizardPageResult);
             this.wizardControl1.Size = new System.Drawing.Size(860, 562);
@@ -100,28 +102,35 @@
             this.wizardPagePlaceDevice.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPagePlaceDevice_Initialize);
             this.wizardPagePlaceDevice.Enter += new System.EventHandler(this.WizardPagePlaceDevice_Enter);
             // 
+            // wizardPagePreScan
+            // 
+            this.wizardPagePreScan.Name = "wizardPagePreScan";
+            this.wizardPagePreScan.Size = new System.Drawing.Size(813, 406);
+            this.wizardPagePreScan.TabIndex = 4;
+            this.wizardPagePreScan.Text = "Confirm";
+            this.wizardPagePreScan.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPagePreScan_Initialize);
+            this.wizardPagePreScan.Enter += new System.EventHandler(this.WizardPagePreScan_Enter);
+            // 
             // wizardPageScan
             // 
             this.wizardPageScan.AllowBack = false;
-            this.wizardPageScan.AllowNext = false;
             this.wizardPageScan.Controls.Add(this.progressBar1);
             this.wizardPageScan.Controls.Add(this.labelStatus);
             this.wizardPageScan.Name = "wizardPageScan";
+            this.wizardPageScan.NextPage = this.wizardPageResult;
+            this.wizardPageScan.ShowNext = false;
             this.wizardPageScan.Size = new System.Drawing.Size(813, 406);
             this.wizardPageScan.TabIndex = 3;
             this.wizardPageScan.Text = "Scan Device";
             this.wizardPageScan.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageScan_Initialize);
             this.wizardPageScan.Enter += new System.EventHandler(this.WizardPageScan_Enter);
             // 
-            // wizardPageResult
+            // progressBar1
             // 
-            this.wizardPageResult.AllowBack = false;
-            this.wizardPageResult.Name = "wizardPageResult";
-            this.wizardPageResult.NextPage = this.wizardPageScanColor;
-            this.wizardPageResult.Size = new System.Drawing.Size(813, 406);
-            this.wizardPageResult.TabIndex = 1;
-            this.wizardPageResult.Text = "Grading Result";
-            this.wizardPageResult.Enter += new System.EventHandler(this.WizardPageResult_Enter);
+            this.progressBar1.Location = new System.Drawing.Point(91, 260);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(652, 30);
+            this.progressBar1.TabIndex = 1;
             // 
             // labelStatus
             // 
@@ -132,12 +141,15 @@
             this.labelStatus.TabIndex = 0;
             this.labelStatus.Text = "Scan in progressing";
             // 
-            // progressBar1
+            // wizardPageResult
             // 
-            this.progressBar1.Location = new System.Drawing.Point(91, 260);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(652, 30);
-            this.progressBar1.TabIndex = 1;
+            this.wizardPageResult.AllowBack = false;
+            this.wizardPageResult.Name = "wizardPageResult";
+            this.wizardPageResult.NextPage = this.wizardPageScanColor;
+            this.wizardPageResult.Size = new System.Drawing.Size(813, 406);
+            this.wizardPageResult.TabIndex = 1;
+            this.wizardPageResult.Text = "Grading Result";
+            this.wizardPageResult.Enter += new System.EventHandler(this.WizardPageResult_Enter);
             // 
             // Form4
             // 
@@ -167,5 +179,6 @@
         private AeroWizard.WizardPage wizardPageScan;
         private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private AeroWizard.WizardPage wizardPagePreScan;
     }
 }
