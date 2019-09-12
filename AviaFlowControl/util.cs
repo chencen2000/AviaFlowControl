@@ -120,5 +120,49 @@ namespace AviaFlowControl
             Program.logIt($"read_color: -- ret={done}, color={c}");
             return new Tuple<bool, Color>(done, c);
         }
+        public static Tuple<bool, SizeF> get_current_device_size()
+        {
+            bool ret = false;
+            SizeF sz = SizeF.Empty;
+            utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
+            string s = ini.GetString("device", "size", "");
+            if(!string.IsNullOrEmpty(s))
+            {
+                string[] xy = s.Split(',');
+                if (xy.Length > 1)
+                {
+                    float x;
+                    float y;
+                    if(float.TryParse(xy[0], out x) && float.TryParse(xy[1], out y))
+                    {
+                        ret = true;
+                        sz = new SizeF(x, y);
+                    }
+                }
+            }
+            return new Tuple<bool, SizeF>(ret, sz);
+        }
+        public static Tuple<bool, Dictionary<string,SizeF>> get_all_device_size()
+        {
+            bool ret = false;
+            Dictionary<string, SizeF> data = new Dictionary<string, SizeF>();
+            utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
+            Dictionary<string, string> models = ini.GetSectionValues("models");
+            foreach(KeyValuePair<string,string> kvp in models)
+            {
+                ret = true;
+                string[] xy = kvp.Value.Split(',');
+                if (xy.Length > 1)
+                {
+                    float x;
+                    float y;
+                    if (float.TryParse(xy[0], out x) && float.TryParse(xy[1], out y))
+                    {
+                        data.Add(kvp.Key, new SizeF(x,y));
+                    }
+                }
+            }
+            return new Tuple<bool, Dictionary<string, SizeF>>(ret, data);
+        }
     }
 }

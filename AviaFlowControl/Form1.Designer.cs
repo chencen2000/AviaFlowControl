@@ -29,19 +29,13 @@
         private void InitializeComponent()
         {
             this.wizardControl1 = new AeroWizard.WizardControl();
-            this.wizardPageLogin = new AeroWizard.WizardPage();
-            this.labelLoginStatus = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.textBoxPassword = new System.Windows.Forms.TextBox();
-            this.textBoxUsername = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.Username = new System.Windows.Forms.Label();
-            this.wizardPageSelect = new AeroWizard.WizardPage();
-            this.comboBoxModels = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.wizardPagePlaceDevice = new AeroWizard.WizardPage();
             this.label6 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.wizardPageSelect = new AeroWizard.WizardPage();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.comboBoxModels = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.wizardPageInProcess = new AeroWizard.WizardPage();
             this.labelStatus = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
@@ -49,15 +43,22 @@
             this.buttonPrint = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.labelGrade = new System.Windows.Forms.Label();
+            this.wizardPageLogin = new AeroWizard.WizardPage();
+            this.labelLoginStatus = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.textBoxPassword = new System.Windows.Forms.TextBox();
+            this.textBoxUsername = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.Username = new System.Windows.Forms.Label();
             this.imeiInput1 = new AviaFlowControl.IMEIInput();
             ((System.ComponentModel.ISupportInitialize)(this.wizardControl1)).BeginInit();
-            this.wizardPageLogin.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.wizardPageSelect.SuspendLayout();
             this.wizardPagePlaceDevice.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.wizardPageSelect.SuspendLayout();
             this.wizardPageInProcess.SuspendLayout();
             this.wizardPageResult.SuspendLayout();
+            this.wizardPageLogin.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // wizardControl1
@@ -68,14 +69,160 @@
             this.wizardControl1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.wizardControl1.Location = new System.Drawing.Point(0, 0);
             this.wizardControl1.Name = "wizardControl1";
-            this.wizardControl1.Pages.Add(this.wizardPageLogin);
-            this.wizardControl1.Pages.Add(this.wizardPageSelect);
             this.wizardControl1.Pages.Add(this.wizardPagePlaceDevice);
+            this.wizardControl1.Pages.Add(this.wizardPageSelect);
             this.wizardControl1.Pages.Add(this.wizardPageInProcess);
             this.wizardControl1.Pages.Add(this.wizardPageResult);
+            this.wizardControl1.Pages.Add(this.wizardPageLogin);
             this.wizardControl1.Size = new System.Drawing.Size(709, 431);
             this.wizardControl1.TabIndex = 0;
             this.wizardControl1.Title = "AVIA Grading System";
+            // 
+            // wizardPagePlaceDevice
+            // 
+            this.wizardPagePlaceDevice.AllowBack = false;
+            this.wizardPagePlaceDevice.Controls.Add(this.label6);
+            this.wizardPagePlaceDevice.Controls.Add(this.pictureBox1);
+            this.wizardPagePlaceDevice.Name = "wizardPagePlaceDevice";
+            this.wizardPagePlaceDevice.Size = new System.Drawing.Size(662, 277);
+            this.wizardPagePlaceDevice.TabIndex = 2;
+            this.wizardPagePlaceDevice.Text = "Place the Device on Tray";
+            this.wizardPagePlaceDevice.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPagePlaceDevice_Commit);
+            this.wizardPagePlaceDevice.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPagePlaceDevice_Initialize);
+            this.wizardPagePlaceDevice.Enter += new System.EventHandler(this.WizardPagePlaceDevice_Enter);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(3, 219);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(475, 32);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "Place the device and click Next to continue";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(140, 118);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(439, 98);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
+            // wizardPageSelect
+            // 
+            this.wizardPageSelect.Controls.Add(this.checkBox1);
+            this.wizardPageSelect.Controls.Add(this.comboBoxModels);
+            this.wizardPageSelect.Controls.Add(this.label1);
+            this.wizardPageSelect.Name = "wizardPageSelect";
+            this.wizardPageSelect.Size = new System.Drawing.Size(662, 277);
+            this.wizardPageSelect.TabIndex = 5;
+            this.wizardPageSelect.Text = "Select device";
+            this.wizardPageSelect.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPageSelect_Commit);
+            this.wizardPageSelect.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageSelect_Initialize);
+            this.wizardPageSelect.Enter += new System.EventHandler(this.WizardPageSelect_Enter);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(474, 138);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(112, 19);
+            this.checkBox1.TabIndex = 3;
+            this.checkBox1.Text = "Show all models";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxModels
+            // 
+            this.comboBoxModels.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxModels.FormattingEnabled = true;
+            this.comboBoxModels.Location = new System.Drawing.Point(102, 135);
+            this.comboBoxModels.Name = "comboBoxModels";
+            this.comboBoxModels.Size = new System.Drawing.Size(331, 23);
+            this.comboBoxModels.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(32, 138);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 15);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Model";
+            // 
+            // wizardPageInProcess
+            // 
+            this.wizardPageInProcess.AllowBack = false;
+            this.wizardPageInProcess.AllowNext = false;
+            this.wizardPageInProcess.Controls.Add(this.labelStatus);
+            this.wizardPageInProcess.Controls.Add(this.progressBar1);
+            this.wizardPageInProcess.Name = "wizardPageInProcess";
+            this.wizardPageInProcess.Size = new System.Drawing.Size(662, 277);
+            this.wizardPageInProcess.TabIndex = 3;
+            this.wizardPageInProcess.Text = "In Progress ...";
+            this.wizardPageInProcess.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageInProcess_Initialize);
+            this.wizardPageInProcess.Enter += new System.EventHandler(this.WizardPageInProcess_Enter);
+            // 
+            // labelStatus
+            // 
+            this.labelStatus.AutoSize = true;
+            this.labelStatus.Location = new System.Drawing.Point(254, 184);
+            this.labelStatus.Name = "labelStatus";
+            this.labelStatus.Size = new System.Drawing.Size(93, 15);
+            this.labelStatus.TabIndex = 1;
+            this.labelStatus.Text = "Scan in progress";
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(94, 218);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(445, 21);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar1.TabIndex = 0;
+            // 
+            // wizardPageResult
+            // 
+            this.wizardPageResult.AllowBack = false;
+            this.wizardPageResult.Controls.Add(this.buttonPrint);
+            this.wizardPageResult.Controls.Add(this.label5);
+            this.wizardPageResult.Controls.Add(this.labelGrade);
+            this.wizardPageResult.Name = "wizardPageResult";
+            this.wizardPageResult.NextPage = this.wizardPagePlaceDevice;
+            this.wizardPageResult.Size = new System.Drawing.Size(662, 277);
+            this.wizardPageResult.TabIndex = 4;
+            this.wizardPageResult.Text = "Grade Result";
+            this.wizardPageResult.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPageResult_Commit);
+            this.wizardPageResult.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageResult_Initialize);
+            // 
+            // buttonPrint
+            // 
+            this.buttonPrint.Location = new System.Drawing.Point(580, 232);
+            this.buttonPrint.Name = "buttonPrint";
+            this.buttonPrint.Size = new System.Drawing.Size(75, 23);
+            this.buttonPrint.TabIndex = 2;
+            this.buttonPrint.Text = "Print";
+            this.buttonPrint.UseVisualStyleBackColor = true;
+            this.buttonPrint.Click += new System.EventHandler(this.ButtonPrint_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(3, 226);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(446, 30);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "Remove the device and Click Next to continue.";
+            // 
+            // labelGrade
+            // 
+            this.labelGrade.AutoSize = true;
+            this.labelGrade.Font = new System.Drawing.Font("Microsoft Sans Serif", 144F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelGrade.Location = new System.Drawing.Point(154, 0);
+            this.labelGrade.Name = "labelGrade";
+            this.labelGrade.Size = new System.Drawing.Size(220, 217);
+            this.labelGrade.TabIndex = 0;
+            this.labelGrade.Text = "A";
             // 
             // wizardPageLogin
             // 
@@ -149,140 +296,6 @@
             this.Username.TabIndex = 0;
             this.Username.Text = "Username";
             // 
-            // wizardPageSelect
-            // 
-            this.wizardPageSelect.Controls.Add(this.comboBoxModels);
-            this.wizardPageSelect.Controls.Add(this.label1);
-            this.wizardPageSelect.Name = "wizardPageSelect";
-            this.wizardPageSelect.Size = new System.Drawing.Size(662, 277);
-            this.wizardPageSelect.TabIndex = 5;
-            this.wizardPageSelect.Text = "Select device";
-            this.wizardPageSelect.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPageSelect_Commit);
-            this.wizardPageSelect.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageSelect_Initialize);
-            this.wizardPageSelect.Enter += new System.EventHandler(this.WizardPageSelect_Enter);
-            // 
-            // comboBoxModels
-            // 
-            this.comboBoxModels.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxModels.FormattingEnabled = true;
-            this.comboBoxModels.Location = new System.Drawing.Point(102, 135);
-            this.comboBoxModels.Name = "comboBoxModels";
-            this.comboBoxModels.Size = new System.Drawing.Size(331, 23);
-            this.comboBoxModels.TabIndex = 2;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(32, 138);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 15);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Model";
-            // 
-            // wizardPagePlaceDevice
-            // 
-            this.wizardPagePlaceDevice.Controls.Add(this.label6);
-            this.wizardPagePlaceDevice.Controls.Add(this.pictureBox1);
-            this.wizardPagePlaceDevice.Name = "wizardPagePlaceDevice";
-            this.wizardPagePlaceDevice.Size = new System.Drawing.Size(662, 277);
-            this.wizardPagePlaceDevice.TabIndex = 2;
-            this.wizardPagePlaceDevice.Text = "Place the Device on Tray";
-            this.wizardPagePlaceDevice.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPagePlaceDevice_Commit);
-            this.wizardPagePlaceDevice.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPagePlaceDevice_Initialize);
-            this.wizardPagePlaceDevice.Enter += new System.EventHandler(this.WizardPagePlaceDevice_Enter);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(3, 219);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(475, 32);
-            this.label6.TabIndex = 1;
-            this.label6.Text = "Place the device and click Next to continue";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(140, 118);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(439, 98);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
-            // wizardPageInProcess
-            // 
-            this.wizardPageInProcess.AllowBack = false;
-            this.wizardPageInProcess.AllowNext = false;
-            this.wizardPageInProcess.Controls.Add(this.labelStatus);
-            this.wizardPageInProcess.Controls.Add(this.progressBar1);
-            this.wizardPageInProcess.Name = "wizardPageInProcess";
-            this.wizardPageInProcess.Size = new System.Drawing.Size(662, 287);
-            this.wizardPageInProcess.TabIndex = 3;
-            this.wizardPageInProcess.Text = "In Progress ...";
-            this.wizardPageInProcess.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageInProcess_Initialize);
-            this.wizardPageInProcess.Enter += new System.EventHandler(this.WizardPageInProcess_Enter);
-            // 
-            // labelStatus
-            // 
-            this.labelStatus.AutoSize = true;
-            this.labelStatus.Location = new System.Drawing.Point(254, 184);
-            this.labelStatus.Name = "labelStatus";
-            this.labelStatus.Size = new System.Drawing.Size(93, 15);
-            this.labelStatus.TabIndex = 1;
-            this.labelStatus.Text = "Scan in progress";
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(94, 218);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(445, 21);
-            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.progressBar1.TabIndex = 0;
-            // 
-            // wizardPageResult
-            // 
-            this.wizardPageResult.AllowBack = false;
-            this.wizardPageResult.Controls.Add(this.buttonPrint);
-            this.wizardPageResult.Controls.Add(this.label5);
-            this.wizardPageResult.Controls.Add(this.labelGrade);
-            this.wizardPageResult.Name = "wizardPageResult";
-            this.wizardPageResult.NextPage = this.wizardPageSelect;
-            this.wizardPageResult.Size = new System.Drawing.Size(662, 277);
-            this.wizardPageResult.TabIndex = 4;
-            this.wizardPageResult.Text = "Grade Result";
-            this.wizardPageResult.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPageResult_Commit);
-            this.wizardPageResult.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.WizardPageResult_Initialize);
-            // 
-            // buttonPrint
-            // 
-            this.buttonPrint.Location = new System.Drawing.Point(580, 232);
-            this.buttonPrint.Name = "buttonPrint";
-            this.buttonPrint.Size = new System.Drawing.Size(75, 23);
-            this.buttonPrint.TabIndex = 2;
-            this.buttonPrint.Text = "Print";
-            this.buttonPrint.UseVisualStyleBackColor = true;
-            this.buttonPrint.Click += new System.EventHandler(this.ButtonPrint_Click);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(3, 226);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(446, 30);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "Remove the device and Click Next to continue.";
-            // 
-            // labelGrade
-            // 
-            this.labelGrade.AutoSize = true;
-            this.labelGrade.Font = new System.Drawing.Font("Microsoft Sans Serif", 144F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelGrade.Location = new System.Drawing.Point(154, 0);
-            this.labelGrade.Name = "labelGrade";
-            this.labelGrade.Size = new System.Drawing.Size(220, 217);
-            this.labelGrade.TabIndex = 0;
-            this.labelGrade.Text = "A";
-            // 
             // imeiInput1
             // 
             this.imeiInput1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -305,18 +318,18 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.wizardControl1)).EndInit();
-            this.wizardPageLogin.ResumeLayout(false);
-            this.wizardPageLogin.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.wizardPageSelect.ResumeLayout(false);
-            this.wizardPageSelect.PerformLayout();
             this.wizardPagePlaceDevice.ResumeLayout(false);
             this.wizardPagePlaceDevice.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.wizardPageSelect.ResumeLayout(false);
+            this.wizardPageSelect.PerformLayout();
             this.wizardPageInProcess.ResumeLayout(false);
             this.wizardPageInProcess.PerformLayout();
             this.wizardPageResult.ResumeLayout(false);
             this.wizardPageResult.PerformLayout();
+            this.wizardPageLogin.ResumeLayout(false);
+            this.wizardPageLogin.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -345,6 +358,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelLoginStatus;
         private System.Windows.Forms.Button buttonPrint;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

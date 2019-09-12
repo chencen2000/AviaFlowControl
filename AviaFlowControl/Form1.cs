@@ -32,6 +32,7 @@ namespace AviaFlowControl
         #region form function
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.UseWaitCursor = false;
             //Bitmap b = new Bitmap(AviaFlowControl.Properties.Resources.AVIA_RGB_web);
             //pictureBox3.Paint += PictureBox3_Paint;
             //wizardControl1.Paint += WizardControl1_Paint;
@@ -43,6 +44,7 @@ namespace AviaFlowControl
             //        this.Invoke(new Action(() => { this.Invalidate(); }));
             //    }
             //});
+#if false
             Task.Run(() => 
             {
                 // start oe app
@@ -125,27 +127,39 @@ namespace AviaFlowControl
                     }
                 }
             });
+#endif
+            // connect to OE server
+            if (!OEControl.connect())
+            {
+                // fail to connect the OE server
+                this.Invoke(new Action(() =>
+                {
+                    MessageBox.Show("Fail to connect UI", "Error");
+                    this.Close();
+                }));
+            }
+
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             OEControl.stop();
             OEControl.disconnect();
             // clean up
-            if (theApp != null)
-            {
-                try { theApp.Kill(); }
-                catch (Exception) { }
-            }
+            //if (theApp != null)
+            //{
+            //    try { theApp.Kill(); }
+            //    catch (Exception) { }
+            //}
             // shutdown FDPhoneRecognition.exe
-            {
-                Process ui = new Process();
-                ui.StartInfo.FileName = System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "FDPhoneRecognition.exe");
-                ui.StartInfo.Arguments = "-Kill-TcpServer";
-                ui.StartInfo.UseShellExecute = false;
-                ui.StartInfo.CreateNoWindow = true;
-                ui.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                ui.Start();
-            }
+            //{
+            //    Process ui = new Process();
+            //    ui.StartInfo.FileName = System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "FDPhoneRecognition.exe");
+            //    ui.StartInfo.Arguments = "-Kill-TcpServer";
+            //    ui.StartInfo.UseShellExecute = false;
+            //    ui.StartInfo.CreateNoWindow = true;
+            //    ui.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            //    ui.Start();
+            //}
         }
 #endregion
 
@@ -268,10 +282,11 @@ namespace AviaFlowControl
         private void WizardPagePlaceDevice_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             this.wizardPagePlaceDevice.Controls.Add(this.imeiInput1);
-            //this.imeiInput1.clear();
+            this.imeiInput1.clear();
             this.imeiInput1.Focus();
             //pictureBox1.Image = Image.FromFile(@"C:\Tools\logs\Rotating_earth_(large).gif");
             Program.logIt("WizardPagePlaceDevice_Initialize: ");
+#if false
             tokenSource = new CancellationTokenSource();
             // start task wait for device loaded
             Task t = Task.Factory.StartNew((o) => 
@@ -305,15 +320,43 @@ namespace AviaFlowControl
                 }
                 tt.Wait();
             }, tokenSource.Token);
+#endif
         }
         private void WizardPagePlaceDevice_Enter(object sender, EventArgs e)
         {
+            this.imeiInput1.clear();
             this.imeiInput1.Focus();
+            utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
+            //ini.WriteValue("device", "select", comboBoxModels.SelectedItem.ToString());
+            ini.DeleteSection("device");
+
+            //this.wizardPagePlaceDevice.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPagePlaceDevice_Commit);
+            //this.wizardPagePlaceDevice.Commit += WizardPagePlaceDevice_Commit;
+            Task.Run(() => OEControl.load());
         }
+
         private void WizardPagePlaceDevice_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
-            utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
+            this.UseWaitCursor = true;
+            Task.Run(() => 
+            {
+                // wait for check device size
+                utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
+                bool done = false;
+                while (!done)
+                {
+                    System.Threading.Thread.Sleep(1000);
+                    string s = avia_device.GetString("device", "device", "");
+                    if (string.Compare(s, "ready", true) == 0)
+                    {
+                        done = true;
+                    }
+                }
+                this.Invoke(new Action(() => wizardControl1.NextPage(this.wizardPageSelect, true)));
+            });
+            e.Cancel = true;
 
+#if false
             if (!theRect.IsEmpty)
             {
                 Point p = System.Windows.Forms.Cursor.Position;
@@ -330,6 +373,7 @@ namespace AviaFlowControl
                 avia_device.WriteValue("device", "device", "ready");
                 e.Cancel = true;
             }
+#endif
         }
 #endregion
 
@@ -471,12 +515,13 @@ namespace AviaFlowControl
         private void WizardPageSelect_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             this.wizardPageSelect.Controls.Add(this.imeiInput1);
+            this.checkBox1.Click += delegate { WizardPageSelect_PrepareModels(); };
             //comboBoxModels.Items.Clear();
-            if (comboBoxModels.Items.Count==0)
-                comboBoxModels.DataSource = models.ToArray();
-            utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
+            //if (comboBoxModels.Items.Count==0)
+            //    comboBoxModels.DataSource = models.ToArray();
+            //utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
             //ini.WriteValue("device", "select", comboBoxModels.SelectedItem.ToString());
-            ini.DeleteSection("device");
+            //ini.DeleteSection("device");
         }
         private void WizardPageSelect_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
@@ -496,12 +541,38 @@ namespace AviaFlowControl
         }
         private void WizardPageSelect_Enter(object sender, EventArgs e)
         {
-            utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
-            ini.DeleteSection("override");
-            this.imeiInput1.clear();
+            //this.imeiInput1.clear();
             this.imeiInput1.Focus();
+            this.UseWaitCursor = false;
+            WizardPageSelect_PrepareModels();
         }
-
+        void WizardPageSelect_PrepareModels()
+        {
+            if (checkBox1.Checked)
+            {
+                utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
+                Dictionary<string, string> models = ini.GetSectionValues("models");
+                comboBoxModels.DataSource = models.Keys.ToArray();
+            }
+            else
+            {
+                Tuple<bool, SizeF> current_device = util.get_current_device_size();
+                Tuple<bool, Dictionary<string, SizeF>> models = util.get_all_device_size();
+                if (current_device.Item1 && models.Item1)
+                {
+                    List<string> ms = new List<string>();
+                    foreach (KeyValuePair<string, SizeF> kvp in models.Item2)
+                    {
+                        SizeF diff = current_device.Item2 - kvp.Value;
+                        if (Math.Abs(diff.Height) < 2 && Math.Abs(diff.Width) < 2)
+                        {
+                            ms.Add(kvp.Key);
+                        }
+                    }
+                    comboBoxModels.DataSource = ms.ToArray();
+                }
+            }
+        }
 
         #endregion
     }

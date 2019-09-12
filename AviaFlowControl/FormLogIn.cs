@@ -31,6 +31,7 @@ namespace AviaFlowControl
             this.Enabled = false;
             string u = textBoxUsername.Text;
             string p = textBoxPassword.Text;
+            this.UseWaitCursor = true;
             new TaskFactory().StartNew(new Action<object>((o) => 
             {
                 Tuple<string, string> up = (Tuple<string, string>)o;
@@ -129,6 +130,7 @@ namespace AviaFlowControl
             {
                 this.Invoke(new Action(() =>
                 {
+                    this.UseWaitCursor = false;
                     this.Enabled = true;
                 }));
             }

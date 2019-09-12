@@ -79,5 +79,15 @@ namespace AviaFlowControl.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FutureDial_SplashScreen {
+            get {
+                object obj = ResourceManager.GetObject("FutureDial_SplashScreen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

@@ -180,6 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="readme.txt" />
+    <None Include="Resources\FutureDial_SplashScreen.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AeroWizard-master\src\Library\AeroWizard.csproj">

@@ -18,8 +18,41 @@ namespace AviaFlowControl
             //    test();
             //});
             //test();
+            this.ThreadExit += MyApplicationContext_ThreadExit;
             startup();
             Program.logIt("MyApplicationContext: --");
+        }
+
+        private void MyApplicationContext_ThreadExit(object sender, EventArgs e)
+        {
+            Program.logIt("MyApplicationContext_ThreadExit: ++");
+            //throw new NotImplementedException();
+            // kill ui
+            utility.IniFile config = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "config.ini"));
+            string s = config.GetString("ui", "app", @"evaoi-3.1.0.3\evaoi-3.1.0.3.exe");
+            s = System.IO.Path.GetFileNameWithoutExtension(s);
+            Process[] p = Process.GetProcessesByName(s);
+            if (p.Length > 0)
+            {
+                try
+                {
+                    p[0].Kill();
+                }
+                catch (Exception) { }
+            }
+            // kill server
+            {
+                s = System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "avia", "FDPhoneRecognition.exe");
+                Process ui = new Process();
+                ui.StartInfo.FileName = s;
+                ui.StartInfo.Arguments = "-kill-tcpserver";
+                ui.StartInfo.UseShellExecute = false;
+                ui.StartInfo.CreateNoWindow = true;
+                ui.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                ui.StartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(s);
+                ui.Start();
+            }
+            Program.logIt("MyApplicationContext_ThreadExit: --");
         }
 
         public static void start()
@@ -45,7 +78,6 @@ namespace AviaFlowControl
             Program.logIt("test: --");
             //ExitThread();
         }
-
         void startup()
         {
             Program.logIt("startup: ++");
@@ -72,8 +104,9 @@ namespace AviaFlowControl
         void startup_wizard()
         {
             Program.logIt("startup_wizard: ++");
-#if !true
-            Form3 f = new Form3();
+#if true
+            Form1 f = new Form1();
+            f.StartPosition = FormStartPosition.CenterScreen;
             f.Show();
             f.FormClosed += (s, o) => { ExitThread(); };
 #else
