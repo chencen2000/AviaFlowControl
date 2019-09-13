@@ -327,6 +327,7 @@ namespace AviaFlowControl
             Task.Run(() => OEControl.load());
             this.imeiInput1.clear();
             this.imeiInput1.Focus();
+            labelReady.Visible = false;
             wizardPagePlaceDevice.ShowNext = false;
             utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
             //ini.WriteValue("device", "select", comboBoxModels.SelectedItem.ToString());
@@ -350,7 +351,11 @@ namespace AviaFlowControl
                 }
                 if (done)
                 {
-                    this.Invoke(new Action(() => wizardPagePlaceDevice.ShowNext = true));
+                    this.Invoke(new Action(() => 
+                    {
+                        labelReady.Visible = true;
+                        wizardPagePlaceDevice.ShowNext = true;
+                    }));
                 }
             });
         }
