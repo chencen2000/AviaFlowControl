@@ -53,6 +53,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.Username = new System.Windows.Forms.Label();
             this.imeiInput1 = new AviaFlowControl.IMEIInput();
+            this.labelReady = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.wizardControl1)).BeginInit();
             this.wizardPagePlaceDevice.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -83,10 +84,11 @@
             // wizardPagePlaceDevice
             // 
             this.wizardPagePlaceDevice.AllowBack = false;
+            this.wizardPagePlaceDevice.Controls.Add(this.labelReady);
             this.wizardPagePlaceDevice.Controls.Add(this.label6);
             this.wizardPagePlaceDevice.Controls.Add(this.pictureBox1);
             this.wizardPagePlaceDevice.Name = "wizardPagePlaceDevice";
-            this.wizardPagePlaceDevice.Size = new System.Drawing.Size(662, 281);
+            this.wizardPagePlaceDevice.Size = new System.Drawing.Size(662, 277);
             this.wizardPagePlaceDevice.TabIndex = 2;
             this.wizardPagePlaceDevice.Text = "Place the Device on Tray";
             this.wizardPagePlaceDevice.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPagePlaceDevice_Commit);
@@ -105,9 +107,9 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(140, 118);
+            this.pictureBox1.Location = new System.Drawing.Point(477, 155);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(439, 98);
+            this.pictureBox1.Size = new System.Drawing.Size(167, 52);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
@@ -119,7 +121,7 @@
             this.wizardPageSelect.Controls.Add(this.comboBoxModels);
             this.wizardPageSelect.Controls.Add(this.label1);
             this.wizardPageSelect.Name = "wizardPageSelect";
-            this.wizardPageSelect.Size = new System.Drawing.Size(662, 282);
+            this.wizardPageSelect.Size = new System.Drawing.Size(662, 277);
             this.wizardPageSelect.TabIndex = 5;
             this.wizardPageSelect.Text = "Select device";
             this.wizardPageSelect.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPageSelect_Commit);
@@ -331,6 +333,17 @@
             this.imeiInput1.Size = new System.Drawing.Size(662, 42);
             this.imeiInput1.TabIndex = 2;
             // 
+            // labelReady
+            // 
+            this.labelReady.AutoSize = true;
+            this.labelReady.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelReady.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.labelReady.Location = new System.Drawing.Point(263, 115);
+            this.labelReady.Name = "labelReady";
+            this.labelReady.Size = new System.Drawing.Size(70, 30);
+            this.labelReady.TabIndex = 2;
+            this.labelReady.Text = "Ready";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -386,6 +399,7 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelReady;
     }
 }
 

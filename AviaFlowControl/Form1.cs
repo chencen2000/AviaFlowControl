@@ -285,7 +285,7 @@ namespace AviaFlowControl
             this.imeiInput1.clear();
             this.imeiInput1.Focus();
             //pictureBox1.Image = Image.FromFile(@"C:\Tools\logs\Rotating_earth_(large).gif");
-            Program.logIt("WizardPagePlaceDevice_Initialize: ");
+            Program.logIt("WizardPagePlaceDevice_Initialize: ++");
 #if false
             tokenSource = new CancellationTokenSource();
             // start task wait for device loaded
@@ -321,12 +321,14 @@ namespace AviaFlowControl
                 tt.Wait();
             }, tokenSource.Token);
 #endif
+            Program.logIt("WizardPagePlaceDevice_Initialize: --");
         }
         private void WizardPagePlaceDevice_Enter(object sender, EventArgs e)
         {
+            Program.logIt("WizardPagePlaceDevice_Enter: ++");
             Task.Run(() => OEControl.load());
-            this.imeiInput1.clear();
-            this.imeiInput1.Focus();
+            //this.imeiInput1.clear();
+           // this.imeiInput1.Focus();
             labelReady.Visible = false;
             wizardPagePlaceDevice.ShowNext = false;
             utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
@@ -358,6 +360,7 @@ namespace AviaFlowControl
                     }));
                 }
             });
+            Program.logIt("WizardPagePlaceDevice_Enter: --");
         }
 
         private void WizardPagePlaceDevice_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
