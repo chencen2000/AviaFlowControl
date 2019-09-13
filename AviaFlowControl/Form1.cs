@@ -324,15 +324,35 @@ namespace AviaFlowControl
         }
         private void WizardPagePlaceDevice_Enter(object sender, EventArgs e)
         {
+            Task.Run(() => OEControl.load());
             this.imeiInput1.clear();
             this.imeiInput1.Focus();
+            wizardPagePlaceDevice.ShowNext = false;
             utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
             //ini.WriteValue("device", "select", comboBoxModels.SelectedItem.ToString());
             ini.DeleteSection("device");
-
             //this.wizardPagePlaceDevice.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.WizardPagePlaceDevice_Commit);
             //this.wizardPagePlaceDevice.Commit += WizardPagePlaceDevice_Commit;
-            Task.Run(() => OEControl.load());
+            Task.Run(() => 
+            {
+                utility.IniFile avia_device = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaDevice.ini"));
+                bool done = false;
+                while (!done)
+                {
+                    System.Threading.Thread.Sleep(1000);
+                    {
+                        string s = avia_device.GetString("device", "device", "");
+                        if (string.Compare(s, "ready", true) == 0)
+                        {
+                            done = true;
+                        }
+                    }
+                }
+                if (done)
+                {
+                    this.Invoke(new Action(() => wizardPagePlaceDevice.ShowNext = true));
+                }
+            });
         }
 
         private void WizardPagePlaceDevice_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
@@ -544,6 +564,8 @@ namespace AviaFlowControl
             //this.imeiInput1.clear();
             this.imeiInput1.Focus();
             this.UseWaitCursor = false;
+            checkBox1.Checked = false;
+            label4.Visible = false;
             WizardPageSelect_PrepareModels();
         }
         void WizardPageSelect_PrepareModels()
@@ -572,6 +594,10 @@ namespace AviaFlowControl
                     comboBoxModels.DataSource = ms.ToArray();
                 }
             }
+            if (comboBoxModels.Items.Count > 0)
+                label4.Visible = false;
+            else
+                label4.Visible = true;
         }
 
         #endregion
