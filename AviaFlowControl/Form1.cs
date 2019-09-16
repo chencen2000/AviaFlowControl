@@ -467,6 +467,7 @@ namespace AviaFlowControl
         private void WizardPageResult_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             Program.logIt("WizardPageResult_Initialize: ");
+            this.wizardPageResult.ShowNext = false;
             //this.wizardPageResult.Controls.Add(this.imeiInput1);
             // load grade
             {
@@ -505,7 +506,9 @@ namespace AviaFlowControl
                 // device connect.
                 if (done)
                 {
-                    this.Invoke(new Action(() => wizardControl1.NextPage()));
+                    //this.Invoke(new Action(() => wizardControl1.NextPage()));
+                    this.Invoke(new Action(() => this.wizardPageResult.ShowNext = true));
+                    
                 }
             }, tokenSource.Token);
         }
