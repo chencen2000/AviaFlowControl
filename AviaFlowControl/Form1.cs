@@ -151,15 +151,17 @@ namespace AviaFlowControl
             //    catch (Exception) { }
             //}
             // shutdown FDPhoneRecognition.exe
-            //{
-            //    Process ui = new Process();
-            //    ui.StartInfo.FileName = System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "FDPhoneRecognition.exe");
-            //    ui.StartInfo.Arguments = "-Kill-TcpServer";
-            //    ui.StartInfo.UseShellExecute = false;
-            //    ui.StartInfo.CreateNoWindow = true;
-            //    ui.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            //    ui.Start();
-            //}
+            try
+            {
+                Process ui = new Process();
+                ui.StartInfo.FileName = System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "AviaGetPhoneSize.exe");
+                ui.StartInfo.Arguments = "-queryisp -Kill-Service";
+                ui.StartInfo.UseShellExecute = false;
+                ui.StartInfo.CreateNoWindow = true;
+                ui.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                ui.Start();
+            }
+            catch (Exception) { }
         }
 #endregion
 
