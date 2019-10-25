@@ -571,6 +571,7 @@ namespace AviaFlowControl
             }
             //comboBoxModels.Tag = comboBoxModels.SelectedItem;
             ini.WriteValue("device", "select", comboBoxModels.SelectedItem.ToString());
+            ini.WriteValue("query", "selected", comboBoxModels.SelectedItem.ToString());
         }
         private void WizardPageSelect_Enter(object sender, EventArgs e)
         {
@@ -605,6 +606,30 @@ namespace AviaFlowControl
                         }
                     }
                     comboBoxModels.DataSource = ms.ToArray();
+                }
+            }
+            // set last selected device as default
+            {
+                utility.IniFile ini = new utility.IniFile(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("FDHOME"), "AVIA", "aviaDevice.ini"));
+                string s = ini.GetString("query", "selected", "");
+                if (!string.IsNullOrEmpty(s))
+                {
+                    if (comboBoxModels.Items.Count == 0)
+                    {
+                        comboBoxModels.DataSource = new string[] { s };
+                    }
+                    else
+                    {
+                        if (!comboBoxModels.Items.Contains(s))
+                        {
+                            List<string> src = new List<string>((string[]) comboBoxModels.DataSource);
+                            src.Add(s);
+                            comboBoxModels.DataSource = src.ToArray();
+                            //comboBoxModels.Items.Add(s);
+                        }
+                    }
+                    if (comboBoxModels.Items.Contains(s))
+                        comboBoxModels.SelectedItem = s;
                 }
             }
             if (comboBoxModels.Items.Count > 0)
